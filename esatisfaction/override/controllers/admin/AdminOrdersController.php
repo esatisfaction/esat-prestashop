@@ -7,18 +7,18 @@
  * you accept the licence agreement.
  *
  * You must not modify, adapt or create derivative works of this source code
- * 
- * @version 0.1.7
+ *
  * @author    e-satisfaction SA
  * @copyright 2016 e-satisfaction SA
  * @license   https://opensource.org/licenses
+ * @version 0.2.2
  */
 
 class AdminOrdersController extends AdminOrdersControllerCore
 {
     /**
      * Ο constructor του class
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright 2016 e-satisfaction SA
      * @return void
@@ -46,7 +46,7 @@ class AdminOrdersController extends AdminOrdersControllerCore
 
     /**
      * Επιστρέφει την αντίστοιχη εικόνα με τον html κώδικα
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright 2016 e-satisfaction SA
      * @param string $img

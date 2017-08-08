@@ -7,46 +7,46 @@
  * you accept the licence agreement.
  *
  * You must not modify, adapt or create derivative works of this source code
- * 
- * @version 0.1.7
+ *
  * @author    e-satisfaction SA
  * @copyright 2016 e-satisfaction SA
  * @license   https://opensource.org/licenses
+ * @version 0.2.2
  */
 
 class Esatisfaction extends Module
 {
     /**
-     * @var string $www Χρησιμοποιείται μόνο για testing 
+     * @var string $www Χρησιμοποιείται μόνο για testing
      * για να καλείται το sandbox του API από το live.
      */
     public $www;
 
     /**
-     * @var string $defaultImage Η βασική εικόνα που 
-     * χρησιμοποιείται όταν δεν βρίσκεται κάποια εικόνα. 
+     * @var string $defaultImage Η βασική εικόνα που
+     * χρησιμοποιείται όταν δεν βρίσκεται κάποια εικόνα.
      */
     public $defaultImage = '../modules/esatisfaction/views/img/esat_32x32.png';
 
     /**
      *
-     * @var int $id_shop Το id του καταστήματος για τις 
+     * @var int $id_shop Το id του καταστήματος για τις
      * κλήσεις του API.
      */
     public $id_shop;
 
     /**
      * Ο constructor του class
-     * 
+     *
      * @author e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
-     * @return void 
+     * @return void
      */
     public function __construct()
     {
         $this->name = 'esatisfaction';
         $this->tab = 'other';
-        $this->version = '0.2.1';
+        $this->version = '0.2.2';
         $this->author = 'e-satisfaction SA';
         $this->tab = 'analytics_stats';
         $this->need_instance = 0;
@@ -65,7 +65,7 @@ class Esatisfaction extends Module
 
     /**
      * Απεγκατάσταση του module
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @return bool
@@ -81,11 +81,11 @@ class Esatisfaction extends Module
     }
 
     /**
-     * Εγκαθιστά το module στις θέσεις, displayOrderConfirmation, 
-     * displayAdminCustomers, actionOrderStatusPostUpdate, 
-     * displayBackOfficeHeader, displayFooter και ανάλογα με την έκδοση στην  
+     * Εγκαθιστά το module στις θέσεις, displayOrderConfirmation,
+     * displayAdminCustomers, actionOrderStatusPostUpdate,
+     * displayBackOfficeHeader, displayFooter και ανάλογα με την έκδοση στην
      * displayAdminOrderLeft ή στην displayAdminOrder
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @return bool
@@ -115,7 +115,7 @@ class Esatisfaction extends Module
 
     /**
      * Εγκατάσταση του tab στο διαχειριστικό.
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @return boolean
@@ -141,7 +141,7 @@ class Esatisfaction extends Module
 
     /**
      * Απεγκατάσταση του tab στο διαχειριστικό.
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @return boolean
@@ -158,7 +158,7 @@ class Esatisfaction extends Module
 
     /**
      * Παίρνει από το API τα ερωτηματολόγια του καταστήματος.
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @return array
@@ -173,7 +173,7 @@ class Esatisfaction extends Module
 
     /**
      * Ελέγχει εάν υπάρχουν δεδομένα στο API για το συγκεκριμένο id_order
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @param int $id_order
@@ -189,7 +189,7 @@ class Esatisfaction extends Module
 
     /**
      * Εγκατάσταση του backoffice Tab
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @param string $class
@@ -218,7 +218,7 @@ class Esatisfaction extends Module
 
     /**
      * Εμφάνιση του διαχειριστικού του module.
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @return string
@@ -267,9 +267,9 @@ class Esatisfaction extends Module
     }
 
     /**
-     * Στέλνει προς αποθήκευση τις παραμέτρους 
+     * Στέλνει προς αποθήκευση τις παραμέτρους
      * από το διαχειριστικό, στο API.
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @return array
@@ -292,21 +292,27 @@ class Esatisfaction extends Module
 
     /**
      * Λαμβάνει τις παραμέτρους από το API για το διαχειριστικό.
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @return array
      */
     private function getConfigurationFromAPI()
     {
+        if (!$this->id_shop) {
+            return false;
+        }
+
         $url = 'https://' . $this->www . '.e-satisfaction.gr/api/v2/prestashop/get_module_settings/';
         $url .= (int) $this->id_shop;
         $apiData = array();
         if ($res = $this->makeApiCall($url)) {
             if ($res = Tools::jsonDecode($res)) {
                 foreach ($res as $confs) {
-                    foreach ($confs as $key => $conf) {
-                        $apiData[$key] = $conf;
+                    if (is_object($confs)) {
+                        foreach ($confs as $key => $conf) {
+                            $apiData[$key] = $conf;
+                        }
                     }
                 }
             }
@@ -317,7 +323,7 @@ class Esatisfaction extends Module
 
     /**
      * Εμφάνιση του διαχειριστικού του module
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @return string
@@ -365,7 +371,7 @@ class Esatisfaction extends Module
             ),
             'submit' => array(
                 'title' => $this->l('Save'),
-                'class' => 'button',
+                'class' => 'btn btn-default',
             ),
         );
         $fields_form[1]['form'] = array(
@@ -430,7 +436,7 @@ class Esatisfaction extends Module
             ),
             'submit' => array(
                 'title' => $this->l('Save'),
-                'class' => 'button',
+                'class' => 'btn btn-default',
             ),
         );
 
@@ -481,19 +487,19 @@ class Esatisfaction extends Module
         if (isset($dataFromAPI['module_pg_banner_url'])) {
             $icon = $dataFromAPI['module_pg_banner_url'];
         }
+        $this->context->smarty->assign(array(
+            'icon' => $this->validateImage($icon),
+            'name' => $this->name
+        ));
 
-        $html = '<div class="row">'
-                . '<div class="col-lg-12">'
-                . '<img src="' . $this->validateImage($icon) . '" alt="' . $this->name . '"'
-                . '</div>';
-
-        return $helper->generateForm($fields_form) . $html;
+        return $helper->generateForm($fields_form)
+        . $this->context->smarty->fetch($this->local_path . 'views/templates/admin/configure.tpl');
     }
 
     /**
-     * Hook για την συγκέντρωση στατιστικών 
+     * Hook για την συγκέντρωση στατιστικών
      * κατά την δημιουργία της παραγγελίας.
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @param array $params
@@ -519,7 +525,7 @@ class Esatisfaction extends Module
 
     /**
      * Hook για το orderlist.
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @param array $params
@@ -527,13 +533,18 @@ class Esatisfaction extends Module
      */
     public function hookActionAdminOrdersListingResultsModifier($params)
     {
+        if (!Configuration::get('ESATISFACTION_SITE_ID')) {
+            return false;
+        }
+
         $page_list = array();
         $result_list = array();
         $id_string = "";
         //get order list order_ids and prepare tables
         foreach ($params['list'] as $list) {
-            $page_list[] = $list['id_order'];
-            $id_string .= $list['id_order'] . ",";
+            $oid = (int)$list['id_order'];
+            $page_list[] = $oid;
+            $id_string .= $oid . ",";
         }
         $id_string2 = trim($id_string, ",");
 
@@ -598,24 +609,24 @@ class Esatisfaction extends Module
         foreach ($decoded as $row => $object) {
             // check cases of retured updates
             if (in_array($object->order_id, $result_list)) {
-                Db::getInstance()->executeS(
+                Db::getInstance()->execute(
                     'UPDATE '._DB_PREFIX_.'esat_data '
-                    .'SET needs_update = "'.$object->need_update.'", '
-                    .'last_update = NOW(), img = '.$object->ordrlist_pg_imgurl.' '
-                    .'WHERE id_order = '.$object->order_id
+                    .'SET needs_update = "'.(int)$object->need_update.'", '
+                    .'last_update = NOW(), img = \''.pSQL($object->ordrlist_pg_imgurl).'\' '
+                    .'WHERE id_order = '.(int)$object->order_id
                 );
                 $list[$object->order_id] = $object->ordrlist_pg_imgurl;
             } elseif ($object->need_update == null) {
-                Db::getInstance()->executeS(
+                Db::getInstance()->execute(
                     'INSERT INTO '._DB_PREFIX_.'esat_data (id_order, needs_update, last_update, img) '
-                    .'VALUES ("'.$object->order_id.'","0",NOW(), "--") '
+                    .'VALUES ("'.(int)$object->order_id.'","0",NOW(), "--") '
                 );
                 $list[$object->order_id] = '--';
             } else {
-                Db::getInstance()->executeS(
+                Db::getInstance()->execute(
                     'INSERT INTO '. _DB_PREFIX_ .'esat_data '
-                    . 'VALUES ("'.$object->order_id.'", "'.$object->need_update.' ",'
-                    . 'NOW(), "'.$object->ordrlist_pg_imgurl.' ")'
+                    . 'VALUES ("'.(int)$object->order_id.'", "'.(int)$object->need_update.' ",'
+                    . 'NOW(), "'.pSQL($object->ordrlist_pg_imgurl).'")'
                 );
                 $list[$object->order_id] = $object->ordrlist_pg_imgurl;
             }
@@ -631,7 +642,7 @@ class Esatisfaction extends Module
 
     /**
      * function για το aggregated_order_page_json
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @param array $json_data
@@ -678,7 +689,7 @@ class Esatisfaction extends Module
 
     /**
      * Hook για την τοποθέτηση του javascript κωδικού στο footer
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @param array $params
@@ -695,9 +706,9 @@ class Esatisfaction extends Module
     }
 
     /**
-     * Εμφάνιση στατιστικών που λαμβάνονται 
+     * Εμφάνιση στατιστικών που λαμβάνονται
      * από το API στις παραγγελίες στο backoffice.
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @param array $params
@@ -705,6 +716,10 @@ class Esatisfaction extends Module
      */
     public function hookDisplayAdminOrderLeft($params)
     {
+        if (!Configuration::get('ESATISFACTION_SITE_ID')) {
+            return;
+        }
+
         $errors = true;
         $id_order = (int) $params['id_order'];
         $newVersion = false;
@@ -794,7 +809,7 @@ class Esatisfaction extends Module
 
     /**
      * Hook για την συμβατότητα με παλιότερες εκδόσεις.
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @param array $params
@@ -806,9 +821,9 @@ class Esatisfaction extends Module
     }
 
     /**
-     * Εμφάνιση στατιστικών που λαμβάνονται από το 
+     * Εμφάνιση στατιστικών που λαμβάνονται από το
      * API στην καρτέλα του customer στο backoffice.
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @param array $params
@@ -856,7 +871,7 @@ class Esatisfaction extends Module
 
     /**
      * Γίνεται η κλήση στο API.
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @param string $url
@@ -886,7 +901,7 @@ class Esatisfaction extends Module
 
     /**
      * Στέλνει τη διαγραμμένη παραγγελία στο API.
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @param array $params
@@ -903,10 +918,10 @@ class Esatisfaction extends Module
     }
 
     /**
-     * Ελέγχει εάν η επιστροφή από το API είναι πραγματική 
-     * εικόνα και σε αντίθετη περίπτωση, επιστρέφει 
+     * Ελέγχει εάν η επιστροφή από το API είναι πραγματική
+     * εικόνα και σε αντίθετη περίπτωση, επιστρέφει
      * την default εικόνα που έχει οριστεί στο class.
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @param string$image
@@ -930,7 +945,7 @@ class Esatisfaction extends Module
 
     /**
      * Προσθέτει το απαραίτητο CSS στο backoffice.
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @return void

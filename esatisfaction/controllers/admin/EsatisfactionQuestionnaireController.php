@@ -8,7 +8,7 @@
  *
  * You must not modify, adapt or create derivative works of this source code
  *
- * Συγκέντρωση των ερωτηματολογίων. 
+ * Συγκέντρωση των ερωτηματολογίων.
  * Επιπρόσθετο tab στο διαχειριστικό.
  *
  * @author    e-satisfaction SA
@@ -20,7 +20,7 @@ class EsatisfactionQuestionnaireController extends AdminController
 {
     /**
      * Ο constructor του class
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @return void
@@ -34,7 +34,7 @@ class EsatisfactionQuestionnaireController extends AdminController
     }
     /**
      * Εμφάνιση των απαντημένων ερωτηματολογίων
-     * 
+     *
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @return mixed
