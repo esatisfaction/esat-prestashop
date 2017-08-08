@@ -16,6 +16,9 @@
 require_once dirname(__FILE__) . '/../../config/config.inc.php';
 require_once dirname(__FILE__) . '/../../init.php';
 require_once dirname(__FILE__) . '/esatisfaction.php';
+if (Tools::encrypt('esatmodule') != Tools::getValue('token')) {
+    die('Bad token');
+}
 header('Content-Type: application/vnd.ms-excel');
 header('Content-disposition: attachment; filename=e-satisfaction.xls');
 $question_id = filter_input(INPUT_POST, 'question_id', FILTER_SANITIZE_NUMBER_INT);

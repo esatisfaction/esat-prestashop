@@ -57,6 +57,7 @@ class EsatisfactionQuestionnaireController extends AdminController
         $this->context->smarty->assign(array(
             'questionaries' => (array) $apiRes,
             'logo' => $esatisfactionModule->defaultImage,
+            'esattoken' => Tools::encrypt('esatmodule'),
         ));
         $this->context->smarty->assign(array('content' => $this->context->smarty->fetch($tpl_path)));
 

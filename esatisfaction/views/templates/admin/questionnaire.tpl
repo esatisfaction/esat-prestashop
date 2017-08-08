@@ -34,7 +34,7 @@
                         <td>{$questionarie->customquest_pg_qstage|escape:'htmlall':'UTF-8'}</td>
                         <td>{$questionarie->customquest_pg_qanswersnumber|escape:'htmlall':'UTF-8'}</td>
                         <td>
-                            <form action="../modules/esatisfaction/genExcel.php" name="export" id="export_custom" method="post">
+                            <form action="../modules/esatisfaction/genExcel.php?token={$esattoken|escape:'htmlall':'UTF-8'}" name="export" id="export_custom" method="post">
                                 <input type="hidden" name="question_id" value="{$questionarie->customquest_pg_qid|escape:'htmlall':'UTF-8'}">
                                 <input type="hidden" name="stage" value="{$questionarie->customquest_pg_qstage|escape:'htmlall':'UTF-8'}">
                                 <button type="submit" class="btn btn-medium table-export">

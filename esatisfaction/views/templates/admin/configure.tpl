@@ -13,6 +13,6 @@
  *}
 <div class="row">
     <div class="col-lg-12">
-        <img src="{$icon|escape:'htmlall':'UTF-8'}}" alt="{$name|escape:'htmlall':'UTF-8'}}">
+        <img src="{$icon|escape:'htmlall':'UTF-8'}" alt="{$name|escape:'htmlall':'UTF-8'}">
     </div>
 </div>

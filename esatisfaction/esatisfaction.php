@@ -11,7 +11,7 @@
  * @author    e-satisfaction SA
  * @copyright 2016 e-satisfaction SA
  * @license   https://opensource.org/licenses
- * @version 0.2.5
+ * @version 0.2.6
  */
 
 class Esatisfaction extends Module
@@ -46,7 +46,7 @@ class Esatisfaction extends Module
     {
         $this->name = 'esatisfaction';
         $this->tab = 'other';
-        $this->version = '0.2.5';
+        $this->version = '0.2.6';
         $this->author = 'e-satisfaction SA';
         $this->tab = 'analytics_stats';
         $this->need_instance = 0;
@@ -548,7 +548,8 @@ class Esatisfaction extends Module
         }
         $id_string2 = trim($id_string, ",");
 
-        $sql = 'SELECT id_order FROM ' . _DB_PREFIX_ . 'esat_data WHERE id_order IN (' . $id_string2 . ') '
+        $sql = 'SELECT id_order FROM ' . _DB_PREFIX_ . 'esat_data '
+                . 'WHERE id_order IN (' . array_map('intval', $id_string2) . ') '
                 . 'ORDER BY  `' . _DB_PREFIX_ . 'esat_data`.`id_order` DESC';
         $results = Db::getInstance()->executeS($sql);
 
@@ -562,7 +563,8 @@ class Esatisfaction extends Module
             $array = array_diff($page_list, $result_list);
             //on the SQL select below we set on how often the updates
             //should take place (eg. for 30min updates change 3600 to 1800)
-            $sql = 'SELECT id_order FROM ' . _DB_PREFIX_ . 'esat_data WHERE id_order IN (' . $id_string2 . ') '
+            $sql = 'SELECT id_order FROM ' . _DB_PREFIX_ . 'esat_data '
+                    . 'WHERE id_order IN (' . array_map('intval', $id_string2) . ') '
                     . 'AND needs_update =1 AND UNIX_TIMESTAMP( NOW() ) - UNIX_TIMESTAMP( last_update ) > 3600 '
                     . 'ORDER BY  `' . _DB_PREFIX_ . 'esat_data`.`id_order` DESC';
             $need_update = Db::getInstance()->executeS($sql);
