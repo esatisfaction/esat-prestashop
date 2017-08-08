@@ -55,7 +55,11 @@ class AdminOrdersController extends AdminOrdersControllerCore
     public function getLink($img)
     {
         if ($img != '--') {
-            return "<img src=\"" . htmlspecialchars($img) . "\">";
+            $fileData = Tools::file_get_contents(
+                _PS_MODULE_DIR_.'esatisfaction/views/templates/hook/adminorderlist.html'
+            );
+            $final = str_replace('{$img}', htmlspecialchars($img), $fileData);
+            return $final;
         }
         return "--";
     }

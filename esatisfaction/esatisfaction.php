@@ -46,12 +46,12 @@ class Esatisfaction extends Module
     {
         $this->name = 'esatisfaction';
         $this->tab = 'other';
-        $this->version = '0.2.0';
+        $this->version = '0.2.1';
         $this->author = 'e-satisfaction SA';
         $this->tab = 'analytics_stats';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
-        $this->module_key = '46e9982d3bf1301078e5d0a83b4b15b6';
+        $this->module_key = '5cd651fbc7befadc249391eb1ef2bf7d';
         $this->bootstrap = true;
         parent::__construct();
         $this->displayName = $this->l('e-satisfaction tracking module');
