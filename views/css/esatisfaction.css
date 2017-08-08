@@ -1,0 +1,38 @@
+.icon-EsatisfactionQuestionnaire:before{
+    content: url("../img/esat_16x26.png");
+}
+#EsatisfactionQuestionaire .btn.table-export {
+    position: relative;
+    padding: 6px 6px 6px 30px;
+}
+#EsatisfactionQuestionaire .xls.glyphicon {
+    background-repeat: no-repeat;
+    background-image: url("../img/xls.png");
+    background-size: contain;
+    width: 24px;
+    height: 25px;
+    display: inline-block;
+    position: absolute;
+    left: 4px;
+    top: 3px;
+}
+#EsatisfactionQuestionaire .status > span {
+    display: inline-block;
+    padding: 5px;
+    border-radius: 3px;
+    min-width: 60px;
+    text-align: center;
+}
+#eSatisfactionPanel input.form-control.fixed-width-sm {
+    text-align: center;
+}
+#eSatisfactionPanel tr.clickable {
+    cursor: pointer;
+}
+#eSatisfactionPanel input.form-control.fixed-width-sm.image{
+    width: 38px !important;
+    height: 38px !important;
+}
+.center > input.form-control.fixed-width-sm {
+    margin: 0 auto;
+}
