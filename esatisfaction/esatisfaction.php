@@ -11,7 +11,7 @@
  * @author    e-satisfaction SA
  * @copyright 2016 e-satisfaction SA
  * @license   https://opensource.org/licenses
- * @version 0.2.2
+ * @version 0.2.5
  */
 
 class Esatisfaction extends Module
@@ -46,7 +46,7 @@ class Esatisfaction extends Module
     {
         $this->name = 'esatisfaction';
         $this->tab = 'other';
-        $this->version = '0.2.2';
+        $this->version = '0.2.5';
         $this->author = 'e-satisfaction SA';
         $this->tab = 'analytics_stats';
         $this->need_instance = 0;
