@@ -38,9 +38,11 @@ if ($res = $esatisfactionModule->makeApiCall($url)) {
     $res = Tools::jsonDecode($res);
 }
 echo 'Question ID' . "\t" . 'Answer' . "\t" . 'Completed Date' . "\n";
-foreach ($res as $line) {
-    $questionId = $line->customquest_pg_qanswers_qid;
-    $answer = $line->customquest_pg_qanswers_answer;
-    $completed_date = $line->customquest_pg_qanswers_qdate;
-    echo $questionId . "\t" . $answer . "\t" . $completed_date . "\n";
+if (is_array($res) && !empty($res)) {
+    foreach ($res as $line) {
+        $questionId = isset($line->customquest_pg_qanswers_qid) ? $line->customquest_pg_qanswers_qid : '';
+        $answer = isset($line->customquest_pg_qanswers_answer) ? $line->customquest_pg_qanswers_answer : '';
+        $completed_date = isset($line->customquest_pg_qanswers_qdate) ? $line->customquest_pg_qanswers_qdate : '';
+        echo $questionId . "\t" . $answer . "\t" . $completed_date . "\n";
+    }
 }
