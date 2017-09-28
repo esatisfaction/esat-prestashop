@@ -5,3 +5,6 @@ Thumbs.db
 
 # IDE-relative files and folders
 .idea
+
+# Prestashop installation files
+config.xml
