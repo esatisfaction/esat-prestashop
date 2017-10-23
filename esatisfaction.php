@@ -11,7 +11,7 @@
  * @author    e-satisfaction SA
  * @copyright 2016 e-satisfaction SA
  * @license   https://opensource.org/licenses
- * @version 0.2.8
+ * @version 0.2.9
  */
 
 class Esatisfaction extends Module
@@ -46,12 +46,12 @@ class Esatisfaction extends Module
     {
         $this->name = 'esatisfaction';
         $this->tab = 'other';
-        $this->version = '0.2.8';
+        $this->version = '0.2.9';
         $this->author = 'e-satisfaction SA';
         $this->tab = 'analytics_stats';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
-        $this->module_key = 'd58dc4e1452557f07400a497810a3801';
+        $this->module_key = '5cd651fbc7befadc249391eb1ef2bf7d';
         $this->bootstrap = true;
         parent::__construct();
         $this->displayName = $this->l('e-satisfaction tracking module');

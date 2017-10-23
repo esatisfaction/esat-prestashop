@@ -11,7 +11,7 @@
  * @author    e-satisfaction SA
  * @copyright 2016 e-satisfaction SA
  * @license   https://opensource.org/licenses
- * @version 0.2.8
+ * @version 0.2.9
  */
 
 class AdminOrdersController extends AdminOrdersControllerCore
