@@ -278,9 +278,9 @@ class Esatisfaction extends Module
     {
         $url = 'https://' . $this->www . '.e-satisfaction.gr/api/v2/prestashop/module_settings/' . (int) $this->id_shop;
         $url .= '?';
-        $url .= 'config_pg_browse=' . (bool) Configuration::get('ESATISFACTION_BROWSEQ');
-        $url .= '&config_pg_checkout=' . (bool) Configuration::get('ESATISFACTION_CHKOUTQ');
-        $url .= '&config_pg_aftersales=' . (bool) Configuration::get('ESATISFACTION_AFTRSALES');
+        $url .= 'config_pg_browse=' . ((bool) Configuration::get('ESATISFACTION_BROWSEQ') ? '1' : '0');
+        $url .= '&config_pg_checkout=' . ((bool) Configuration::get('ESATISFACTION_CHKOUTQ') ? '1' : '0');
+        $url .= '&config_pg_aftersales=' . ((bool) Configuration::get('ESATISFACTION_AFTRSALES') ? '1' : '0');
         if ($res = $this->makeApiCall($url)) {
             if ($res = Tools::jsonDecode($res)) {
                 return $res;
