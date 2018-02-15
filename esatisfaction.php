@@ -503,10 +503,14 @@ class Esatisfaction extends Module
      * @author    e-satisfaction SA
      * @copyright (c) 2016, e-satisfaction SA
      * @param array $params
-     * @return boolean
+     * @return string
      */
     public function hookDisplayOrderConfirmation($params)
     {
+        if ((bool)Configuration::get('ESATISFACTION_CHKOUTQ') === false) {
+            return '';
+        }
+        
         if (isset($params['objOrder']) && Validate::isLoadedObject($params['objOrder'])) {
             $url = 'https://' . $this->www . '.e-satisfaction.gr/miniquestionnaire/genkey.php?';
             $url .= 'site_auth=' . Configuration::get('ESATISFACTION_AUTH');
@@ -519,7 +523,7 @@ class Esatisfaction extends Module
 
             return $this->display(__FILE__, 'questionnaire.tpl');
         } else {
-            return false;
+            return '';
         }
     }
 
