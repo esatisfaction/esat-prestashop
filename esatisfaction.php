@@ -507,10 +507,6 @@ class Esatisfaction extends Module
      */
     public function hookDisplayOrderConfirmation($params)
     {
-        if ((bool)Configuration::get('ESATISFACTION_CHKOUTQ') === false) {
-            return '';
-        }
-        
         if (isset($params['objOrder']) && Validate::isLoadedObject($params['objOrder'])) {
             $url = 'https://' . $this->www . '.e-satisfaction.gr/miniquestionnaire/genkey.php?';
             $url .= 'site_auth=' . Configuration::get('ESATISFACTION_AUTH');
