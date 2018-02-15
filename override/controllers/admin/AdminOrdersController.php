@@ -42,6 +42,7 @@ class AdminOrdersController extends AdminOrdersControllerCore
         $this->_select .= ",esat.`img` AS esatisfaction, ";
 
         $this->_join .= ' LEFT JOIN `' . _DB_PREFIX_ . 'esat_data` esat  ON a.`id_order` = esat.`id_order` ';
+        $this->_group .= ' GROUP BY a.`id_order` ';
     }
 
     /**
