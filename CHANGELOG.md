@@ -7,6 +7,9 @@ in all versions (major and minor)
 To get the diff for a specific change, go to https://github.com/esatisfaction/esat-prestashop/commit/XXX where
 XXX is the change hash
 
+* 0.2.10 (2018-05-02)
+  * [fix] Fixed passing false values for boolean config parameters
+  * [fix] Fix multiple rows for each order in orders list
 * 0.2.9 (2017-10-23)
   * [fix] Fix module key
 * 0.2.8 (2017-09-21)
