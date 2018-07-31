@@ -15,19 +15,19 @@
 {literal}
 <script>
 window.esat_config = {
-     application_id: "{/literal}{$siteid|escape:'htmlall':'UTF-8'}{literal}",
+     application_id: "{/literal}{$appid}{literal}",
      collection: { 
-        "{/literal}{$checkout_quest_id|escape:'htmlall':'UTF-8'}{literal}": {
-            'questionnaire_id': "{/literal}{$checkout_quest_id|escape:'htmlall':'UTF-8'}{literal}",
+        "{/literal}{$checkout_quest_id}{literal}": {
+            'questionnaire_id': "{/literal}{$checkout_quest_id}{literal}",
              'metadata' : {
                   'responder' : {
-                    'email': "{/literal}{$customer_email|escape:'htmlall':'UTF-8'}{literal}",
-                    'phone_number': "{/literal}{$customer_phone|escape:'htmlall':'UTF-8'}{literal}"
+                    'email': "{/literal}{$customer_email}{literal}",
+                    'phone_number': "{/literal}{$customer_phone}{literal}"
                   },
                   'questionnaire' : {
-                    'transaction_id': "{/literal}{$order_id|escape:'htmlall':'UTF-8'}{literal}",
-                    'transaction_date': "{/literal}{$order_date|escape:'htmlall':'UTF-8'}{literal}",
-                    'store_pickup': {/literal}{$is_store_pickup|escape:'htmlall':'UTF-8'}{literal}
+                    'transaction_id': "{/literal}{$order_id}{literal}",
+                    'transaction_date': "{/literal}{$order_date}{literal}",
+                    'store_pickup': {/literal}{$is_store_pickup}{literal}
                   }
              }
         }

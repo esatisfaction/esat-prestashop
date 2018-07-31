@@ -18,17 +18,15 @@ class Esatisfaction extends Module
 {
 
     /**
-     * @var string $defaultImage Η βασική εικόνα που
-     * χρησιμοποιείται όταν δεν βρίσκεται κάποια εικόνα.
+     * @var string $defaultImage 
      */
     public $defaultImage = '../modules/esatisfaction/views/img/esat_32x32.png';
     
     /**
     *
-    * @var int $id_shop Το id του καταστήματος για τις
-    * κλήσεις του API.
+    * @var int $app_id Application ID
     */
-    public $id_shop;
+    public $app_id;
     
     public function __construct()
     {
@@ -38,13 +36,13 @@ class Esatisfaction extends Module
         $this->author = 'e-satisfaction SA';
         $this->tab = 'analytics_stats';
         $this->need_instance = 0;
-        $this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
+        $this->ps_versions_compliancy = array('min' => '1.7', 'max' => '1.7.99.99');
         $this->module_key = '5cd651fbc7befadc249391eb1ef2bf7d';
         $this->bootstrap = true;
         parent::__construct();
-        $this->displayName = $this->l('e-satisfaction tracking module');
+        $this->displayName = $this->l('E-satisfaction tracking module');
         $this->description = $this->l('Adds the code necessary to gather customer satisfactiond data');
-        $this->id_shop = Configuration::get('ESATISFACTION_SITE_ID');
+        $this->app_id = Configuration::get('ESATISFACTION_APP_ID');
         if (!defined('_PS_VERSION_')) {
             exit;
         }
@@ -63,12 +61,14 @@ class Esatisfaction extends Module
     {
         Db::getInstance(_PS_USE_SQL_SLAVE_)->Execute('CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'esat_order_stat` (
         `id_order` INT( 11 ) NOT NULL,
-        `item_id` VARCHAR(100) NOT NULL
+        `item_id` VARCHAR(100) NOT NULL,
+        KEY `id_order` (`id_order`),
         ) ENGINE = MYISAM');
+        
         return parent::install() &&
                 $this->registerHook('displayOrderConfirmation') &&
                 $this->registerHook('actionOrderStatusPostUpdate') &&
-                $this->registerHook('displayFooter') &&
+                $this->registerHook('displayBeforeBodyClosingTag') &&
                 $this->registerHook('displayBackOfficeHeader') &&
                 $this->registerHook('displayHeader') ;
     }
@@ -82,11 +82,7 @@ class Esatisfaction extends Module
     */
     public function uninstall()
     {
-        if (parent::uninstall()) {
-            return true;
-        }
-
-        return false;
+        return (bool)parent::uninstall();
     }
     
     /**
@@ -100,10 +96,10 @@ class Esatisfaction extends Module
     {
         $output = null;
         if (Tools::isSubmit('submit' . $this->name)) {
-            $site_id = Tools::getValue('ESATISFACTION_SITE_ID');
+            $app_id = Tools::getValue('ESATISFACTION_APP_ID');
             $auth = Tools::getValue('ESATISFACTION_AUTH');
             $output = null;
-            if (!$site_id || empty($site_id)) {
+            if (!$app_id || empty($app_id)) {
                 $output .= $this->displayError($this->l('Site Id cannot be empty'));
             }
 
@@ -112,7 +108,7 @@ class Esatisfaction extends Module
             }
            
             if (empty($output)) {
-                Configuration::updateValue('ESATISFACTION_SITE_ID', $site_id);
+                Configuration::updateValue('ESATISFACTION_APP_ID', $app_id);
                 Configuration::updateValue('ESATISFACTION_AUTH', $auth);
                 $output .= $this->displayConfirmation($this->l('Settings updated'));
             }
@@ -196,7 +192,6 @@ class Esatisfaction extends Module
      * @copyright (c) 2018, e-satisfaction SA
      * @return string
      */
-     
     public function displayForm()
     {
         $fields_form = null;
@@ -231,7 +226,7 @@ class Esatisfaction extends Module
                 array(
                     'type' => 'text',
                     'label' => $this->l('Application Id'),
-                    'name' => 'ESATISFACTION_SITE_ID',
+                    'name' => 'ESATISFACTION_APP_ID',
                     'size' => 20,
                     'required' => true,
                 ),
@@ -452,7 +447,7 @@ class Esatisfaction extends Module
             ),
         );
         // Load current value
-        $helper->fields_value['ESATISFACTION_SITE_ID'] = Configuration::get('ESATISFACTION_SITE_ID');
+        $helper->fields_value['ESATISFACTION_APP_ID'] = Configuration::get('ESATISFACTION_APP_ID');
         $helper->fields_value['ESATISFACTION_AUTH'] = Configuration::get('ESATISFACTION_AUTH');
         $helper->fields_value['ESATISFACTION_CHKOUTID'] = Configuration::get('ESATISFACTION_CHKOUTID');
         $helper->fields_value['ESATISFACTION_HOMEDLVID'] = Configuration::get('ESATISFACTION_HOMEDLVID');
@@ -508,7 +503,7 @@ class Esatisfaction extends Module
     * @author    e-satisfaction SA
     * @copyright (c) 2018, e-satisfaction SA
     * @param array $params
-    * @return boolean
+    * @return void
     */
     public function hookDisplayBackOfficeHeader($params)
     {
@@ -517,6 +512,7 @@ class Esatisfaction extends Module
         }
         $this->context->controller->addJquery();
         $this->context->controller->addJS($this->_path.'views/js/admin.js');
+        return;
     }
     
     /**
@@ -530,24 +526,24 @@ class Esatisfaction extends Module
      */
     public function hookDisplayOrderConfirmation($params)
     {
-        if (isset($params['objOrder']) && Validate::isLoadedObject($params['objOrder'])) {
-            $customer = new Customer($params['objOrder']->id_customer);
-            $invoice_address = new Address($params['objOrder']->id_address_invoice);
+        if (isset($params['order']) && Validate::isLoadedObject($params['order'])) {
+            $customer = new Customer($params['order']->id_customer);
+            $invoice_address = new Address($params['order']->id_address_invoice);
             
             // Χρειάζεται carrier object γιατί αποθηκεύομε reference
             // και η order έχει το carrier_id
-            $carrier = new Carrier($params['objOrder']->id_carrier);
+            $carrier = new Carrier($params['order']->id_carrier);
             $is_store_pickup = (in_array(
                 $carrier->id_reference,
                 json_decode(Configuration::get('ESATISFACTION_STOREPICKUP_IDS'))
-            )) ? true : false ;
+            )) ? 'true' : 'false';
             
-            $siteid = Configuration::get('ESATISFACTION_SITE_ID');
+            $appid = Configuration::get('ESATISFACTION_APP_ID');
             $quest_id = Configuration::get('ESATISFACTION_CHKOUTID');
             $this->context->smarty->assign(array(
-                'order_id' => $params['objOrder']->id,
-                'order_date' => $params['objOrder']->date_add,
-                'siteid' => $siteid,
+                'order_id' => $params['order']->id,
+                'order_date' => $params['order']->date_add,
+                'appid' => $appid,
                 'checkout_quest_id' => $quest_id,
                 'customer_phone' => $invoice_address->phone_mobile,
                 'is_store_pickup' => $is_store_pickup,
@@ -564,10 +560,10 @@ class Esatisfaction extends Module
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param array $params
+     * @param  array $params
      * @return string
      */
-    public function hookDisplayFooter($params)
+    public function hookDisplayBeforeBodyClosingTag($params)
     {
         return $this->display(__FILE__, 'footer.tpl');
     }
@@ -577,13 +573,13 @@ class Esatisfaction extends Module
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param array $params
+     * @param  array $params
      * @return string
      */
     public function hookDisplayHeader($params)
     {
         $this->context->smarty->assign(array(
-            'siteid' => Configuration::get('ESATISFACTION_SITE_ID'),
+            'appid' => Configuration::get('ESATISFACTION_APP_ID'),
         ));
 
         return $this->display(__FILE__, 'header.tpl');
@@ -594,7 +590,7 @@ class Esatisfaction extends Module
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param array $params
+     * @param  array $params
      * @return void
      */
     public function hookActionOrderStatusPostUpdate($params)
@@ -608,7 +604,7 @@ class Esatisfaction extends Module
             $is_store_pickup = (in_array(
                 $carrier->id_reference,
                 json_decode(Configuration::get('ESATISFACTION_STOREPICKUP_IDS'))
-            )) ? true : false ;
+            )) ? true : false;
            
             if (in_array(
                 $params['newOrderStatus']->id,
@@ -641,10 +637,10 @@ class Esatisfaction extends Module
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param string $url
+     * @param  string $url
      * @return mixed
      */
-    public function makeApiCall($url, $data, $expected_code, $method = null, $extra_options = null)
+    public function makeApiCall($url, $data, $expected_code, $method = null, $extra_options = array())
     {
         $auth = Configuration::get('ESATISFACTION_AUTH');
         $ch = curl_init();
@@ -663,10 +659,8 @@ class Esatisfaction extends Module
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         }
         
-        if ($extra_options) {
-            foreach ($extra_options as $option => $value) {
+        foreach ($extra_options as $option => $value) {
                 curl_setopt($ch, $option, $value);
-            }
         }
          
         $res  = curl_exec($ch);
@@ -681,8 +675,7 @@ class Esatisfaction extends Module
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param string $url
-     * @return mixed
+     * @param  string $url
      */
     public function sendQuestionnaire($order_obj, $customer, $invoice_address, $is_store_pickup)
     {
@@ -722,8 +715,7 @@ class Esatisfaction extends Module
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param string $url
-     * @return mixed
+     * @param  object $order_obj
      */
     public function cancelQuestionnaire($order_obj)
     {
@@ -747,7 +739,6 @@ class Esatisfaction extends Module
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
      * @param string $url
-     * @return mixed
      */
     public function insertQueueItem($order_id, $item_id)
     {
@@ -765,8 +756,7 @@ class Esatisfaction extends Module
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param string $url
-     * @return mixed
+     * @param int $order_id
      */
     public function getQueueItem($order_id)
     {
@@ -779,8 +769,7 @@ class Esatisfaction extends Module
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param string $url
-     * @return mixed
+     * @param int $order_id
      */
     public function deleteQueueItem($order_id)
     {
