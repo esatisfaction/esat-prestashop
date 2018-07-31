@@ -17,17 +17,14 @@
 class Esatisfaction extends Module
 {
 
-    /**
-     * @var string $defaultImage 
-     */
     public $defaultImage = '../modules/esatisfaction/views/img/esat_32x32.png';
-    
+
     /**
     *
     * @var int $app_id Application ID
     */
     public $app_id;
-    
+
     public function __construct()
     {
         $this->name = 'esatisfaction';
@@ -47,7 +44,7 @@ class Esatisfaction extends Module
             exit;
         }
     }
-    
+
     /**
      * Εγκαθιστά το module στις θέσεις, displayOrderConfirmation,
      * actionOrderStatusPostUpdate,
@@ -64,15 +61,15 @@ class Esatisfaction extends Module
         `item_id` VARCHAR(100) NOT NULL,
         KEY `id_order` (`id_order`),
         ) ENGINE = MYISAM');
-        
+
         return parent::install() &&
                 $this->registerHook('displayOrderConfirmation') &&
                 $this->registerHook('actionOrderStatusPostUpdate') &&
                 $this->registerHook('displayBeforeBodyClosingTag') &&
                 $this->registerHook('displayBackOfficeHeader') &&
-                $this->registerHook('displayHeader') ;
+                $this->registerHook('displayHeader');
     }
-    
+
     /**
     * Απεγκατάσταση του module
     *
@@ -106,21 +103,21 @@ class Esatisfaction extends Module
             if (!$auth || empty($auth)) {
                 $output .= $this->displayError($this->l('Site Auth cannot be empty'));
             }
-           
+
             if (empty($output)) {
                 Configuration::updateValue('ESATISFACTION_APP_ID', $app_id);
                 Configuration::updateValue('ESATISFACTION_AUTH', $auth);
                 $output .= $this->displayConfirmation($this->l('Settings updated'));
             }
-            
+
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_MANUAL_SEND',
                 Tools::getValue('manual_send')
             );
-            
+
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_CHKOUTID',
                 Tools::getValue('ESATISFACTION_CHKOUTID')
             );
@@ -132,9 +129,9 @@ class Esatisfaction extends Module
                 'ESATISFACTION_STRPICKID',
                 Tools::getValue('ESATISFACTION_STRPICKID')
             );
-            
+
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_HOMEDLV_PIPE_ID',
                 Tools::getValue('ESATISFACTION_HOMEDLV_PIPE_ID')
             );
@@ -142,26 +139,26 @@ class Esatisfaction extends Module
                 'ESATISFACTION_STRPICK_PIPE_ID',
                 Tools::getValue('ESATISFACTION_STRPICK_PIPE_ID')
             );
-            
+
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_HOMEDLVID_DAYS',
                 Tools::getValue('ESATISFACTION_HOMEDLVID_DAYS')
             );
-            
+
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_DELIVERED_DLV_OS_IDS',
                 json_encode(Tools::getValue('delivered_dlv_os'))
             );
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_CANCELED_DLV_OS_IDS',
                 json_encode(Tools::getValue('canceled_dlv_os'))
             );
-            
+
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_STOREPICKUP_IDS',
                 json_encode(Tools::getValue('store_pickup_carriers'))
             );
@@ -169,14 +166,14 @@ class Esatisfaction extends Module
                 'ESATISFACTION_COURIER_IDS',
                 json_encode(Tools::getValue('courier_carriers'))
             );
-            
+
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_DELIVERED_STRPICK_OS_IDS',
                 json_encode(Tools::getValue('delivered_strpick_os'))
             );
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_CANCELED_STRPICK_OS_IDS',
                 json_encode(Tools::getValue('canceled_strpick_os'))
             );
@@ -184,7 +181,7 @@ class Esatisfaction extends Module
 
         return $output . $this->displayForm();
     }
-    
+
     /**
      * Εμφάνιση του διαχειριστικού του module
      *
@@ -197,7 +194,7 @@ class Esatisfaction extends Module
         $fields_form = null;
         // Get default Language
         $default_lang = (int) Configuration::get('PS_LANG_DEFAULT');
-        
+
         $carriers_raw = Carrier::getCarriers($default_lang, true, false);
         $carriers = array();
         foreach ($carriers_raw as $carrier) {
@@ -206,7 +203,7 @@ class Esatisfaction extends Module
                 'carrier_reference' => $carrier['id_reference'],
                 'name' => $carrier['name']);
         }
-        
+
         $order_statuses_raw = OrderState::getOrderStates($default_lang);
         $order_statuses = array();
         foreach ($order_statuses_raw as $order_status) {
@@ -216,7 +213,7 @@ class Esatisfaction extends Module
                 'name' => $order_status['name']
             );
         }
-        
+
         // Init Fields form array
         $fields_form[0]['form'] = array(
             'legend' => array(
@@ -254,7 +251,7 @@ class Esatisfaction extends Module
                 'class' => 'btn btn-default',
             ),
         );
-        
+
         $fields_form[2]['form'] = array(
             'legend' => array(
                 'title' => $this->l('Manually sending After Delivery / Store Pickup'),
@@ -284,7 +281,7 @@ class Esatisfaction extends Module
                 'class' => 'btn btn-default',
             ),
         );
-    
+
         $fields_form[3]['form'] = array(
             'legend' => array(
                 'title' => $this->l('After Delivery Questionnaire'),
@@ -397,7 +394,7 @@ class Esatisfaction extends Module
                 'class' => 'btn btn-default',
             ),
         );
-            
+
         $fields_form[5]['form'] = array(
             'legend' => array(
                 'title' => $this->l('API Authentication Token'),
@@ -452,14 +449,14 @@ class Esatisfaction extends Module
         $helper->fields_value['ESATISFACTION_CHKOUTID'] = Configuration::get('ESATISFACTION_CHKOUTID');
         $helper->fields_value['ESATISFACTION_HOMEDLVID'] = Configuration::get('ESATISFACTION_HOMEDLVID');
         $helper->fields_value['ESATISFACTION_HOMEDLVID_DAYS'] = Configuration::get('ESATISFACTION_HOMEDLVID_DAYS');
-        
+
         $helper->fields_value['ESATISFACTION_STRPICKID'] = Configuration::get('ESATISFACTION_STRPICKID');
-        
+
         $helper->fields_value['ESATISFACTION_HOMEDLV_PIPE_ID'] = Configuration::get('ESATISFACTION_HOMEDLV_PIPE_ID');
         $helper->fields_value['ESATISFACTION_STRPICK_PIPE_ID'] = Configuration::get('ESATISFACTION_STRPICK_PIPE_ID');
-        
+
         $helper->fields_value['manual_send'] = Configuration::get('ESATISFACTION_MANUAL_SEND');
-        
+
         $delivered_dlv_os = json_decode(Configuration::get('ESATISFACTION_DELIVERED_DLV_OS_IDS'));
         foreach ($delivered_dlv_os as $value) {
             $helper->fields_value['delivered_dlv_os[]_'.$value] = 1;
@@ -472,7 +469,7 @@ class Esatisfaction extends Module
         foreach ($canceled_dlv_os as $value) {
             $helper->fields_value['canceled_dlv_os[]_'.$value] = 1;
         }
-        
+
         $delivered_strpick_os = json_decode(Configuration::get('ESATISFACTION_DELIVERED_STRPICK_OS_IDS'));
         foreach ($delivered_strpick_os as $value) {
             $helper->fields_value['delivered_strpick_os[]_'.$value] = 1;
@@ -485,25 +482,22 @@ class Esatisfaction extends Module
         foreach ($canceled_strpick_os as $value) {
             $helper->fields_value['canceled_strpick_os[]_'.$value] = 1;
         }
-        
-        
-       
+
         $this->context->smarty->assign(array(
             'icon' => $this->defaultImage,
             'name' => $this->name
         ));
-        
+
         return $this->context->smarty->fetch($this->local_path . 'views/templates/admin/configure.tpl').
         $helper->generateForm($fields_form);
     }
-    
+
     /**
     * Hook για την φόρτωση του js στη σελίδα διαχείρισης.
     *
     * @author    e-satisfaction SA
     * @copyright (c) 2018, e-satisfaction SA
     * @param array $params
-    * @return void
     */
     public function hookDisplayBackOfficeHeader($params)
     {
@@ -512,9 +506,9 @@ class Esatisfaction extends Module
         }
         $this->context->controller->addJquery();
         $this->context->controller->addJS($this->_path.'views/js/admin.js');
-        return;
+
     }
-    
+
     /**
      * Hook για την συγκέντρωση στατιστικών
      * κατά την δημιουργία της παραγγελίας.
@@ -522,14 +516,14 @@ class Esatisfaction extends Module
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
      * @param array $params
-     * @return boolean
+     * @return bool
      */
     public function hookDisplayOrderConfirmation($params)
     {
         if (isset($params['order']) && Validate::isLoadedObject($params['order'])) {
             $customer = new Customer($params['order']->id_customer);
             $invoice_address = new Address($params['order']->id_address_invoice);
-            
+
             // Χρειάζεται carrier object γιατί αποθηκεύομε reference
             // και η order έχει το carrier_id
             $carrier = new Carrier($params['order']->id_carrier);
@@ -537,7 +531,7 @@ class Esatisfaction extends Module
                 $carrier->id_reference,
                 json_decode(Configuration::get('ESATISFACTION_STOREPICKUP_IDS'))
             )) ? 'true' : 'false';
-            
+
             $appid = Configuration::get('ESATISFACTION_APP_ID');
             $quest_id = Configuration::get('ESATISFACTION_CHKOUTID');
             $this->context->smarty->assign(array(
@@ -554,26 +548,26 @@ class Esatisfaction extends Module
             return false;
         }
     }
-    
+
     /**
      * Hook για την τοποθέτηση του javascript κωδικού στο footer
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param  array $params
+     * @param array $params
      * @return string
      */
     public function hookDisplayBeforeBodyClosingTag($params)
     {
         return $this->display(__FILE__, 'footer.tpl');
     }
-    
+
     /**
      * Hook για την τοποθέτηση του javascript κωδικού στο header
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param  array $params
+     * @param array $params
      * @return string
      */
     public function hookDisplayHeader($params)
@@ -584,7 +578,7 @@ class Esatisfaction extends Module
 
         return $this->display(__FILE__, 'header.tpl');
     }
-    
+
     /**
      * Hook όταν αλλάζει το status μιας παραγγελίας.
      *
@@ -605,7 +599,7 @@ class Esatisfaction extends Module
                 $carrier->id_reference,
                 json_decode(Configuration::get('ESATISFACTION_STOREPICKUP_IDS'))
             )) ? true : false;
-           
+
             if (in_array(
                 $params['newOrderStatus']->id,
                 json_decode(Configuration::get('ESATISFACTION_DELIVERED_DLV_OS_IDS'))
@@ -616,7 +610,7 @@ class Esatisfaction extends Module
             )) {
                 $this->sendQuestionnaire($order_obj, $customer, $invoice_address, $is_store_pickup);
             }
-           
+
             if ((in_array(
                 $params['newOrderStatus']->id,
                 json_decode(Configuration::get('ESATISFACTION_CANCELED_DLV_OS_IDS'))
@@ -631,7 +625,7 @@ class Esatisfaction extends Module
             }
         }
     }
-    
+
     /**
      * Γίνεται η κλήση στο API.
      *
@@ -651,31 +645,31 @@ class Esatisfaction extends Module
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_HTTPHEADER => array('esat-auth: '.$auth),
          ));
-         
+
         if ($method) {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         } else {
-            curl_setopt($ch, CURLOPT_POST, 1) ;
+            curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         }
         
         foreach ($extra_options as $option => $value) {
                 curl_setopt($ch, $option, $value);
         }
-         
-        $res  = curl_exec($ch);
+
+        $res = curl_exec($ch);
         if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == $expected_code) {
             return $res;
         }
         return false;
     }
-    
+
     /**
      * Βάση του channel προσθέτει στο queue το νέο item.
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param  string $url
+     * @param string $url
      */
     public function sendQuestionnaire($order_obj, $customer, $invoice_address, $is_store_pickup)
     {
@@ -688,7 +682,7 @@ class Esatisfaction extends Module
                 Configuration::get('ESATISFACTION_HOMEDLV_PIPE_ID');
         }
         $url .= '/queue/item';
-        
+
         $data = array(
             'responder_channel_identifier' => $customer->email,
             'locale' => Language::getIsoById($customer->id_lang),
@@ -709,13 +703,13 @@ class Esatisfaction extends Module
             $this->insertQueueItem($order_obj->id, $res_data->item_id);
         }
     }
-    
+
     /**
      * Αφαιρεί το item από το queue
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param  object $order_obj
+     * @param object $order_obj
      */
     public function cancelQuestionnaire($order_obj)
     {
@@ -732,7 +726,7 @@ class Esatisfaction extends Module
             $this->deleteQueueItem($order_obj->id);
         }
     }
-    
+
     /**
      * Δημιουργεί νέα εγγραφή item_id και order_id στη βάση
      *
@@ -750,7 +744,7 @@ class Esatisfaction extends Module
             Db::REPLACE
         );
     }
-    
+
     /**
      * Επιστρέφει το item_id από τη βάση
      *
@@ -760,10 +754,10 @@ class Esatisfaction extends Module
      */
     public function getQueueItem($order_id)
     {
-        $sql = 'SELECT `item_id` FROM `'. _DB_PREFIX_ .'esat_order_stat` WHERE `id_order` = '.(int)$order_id ;
+        $sql = 'SELECT `item_id` FROM `'. _DB_PREFIX_ .'esat_order_stat` WHERE `id_order` = '.(int)$order_id;
         return Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($sql);
     }
-    
+
     /**
      * Διαγράφει το item_id από τη βάση
      *
