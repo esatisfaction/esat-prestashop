@@ -15,7 +15,7 @@
 {literal}
 <script>
     window.esat_config = {
-        application_id: "{/literal}{$siteid|escape:'htmlall':'UTF-8'}{literal}"
+        application_id: "{/literal}{$appid|escape:'htmlall':'UTF-8'}{literal}"
     };
 </script>
 {/literal}

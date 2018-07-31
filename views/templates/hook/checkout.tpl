@@ -15,7 +15,7 @@
 {literal}
 <script>
 window.esat_config = {
-     application_id: "{/literal}{$siteid|escape:'htmlall':'UTF-8'}{literal}",
+     application_id: "{/literal}{$appid|escape:'htmlall':'UTF-8'}{literal}",
      collection: { 
         "{/literal}{$checkout_quest_id|escape:'htmlall':'UTF-8'}{literal}": {
             'questionnaire_id': "{/literal}{$checkout_quest_id|escape:'htmlall':'UTF-8'}{literal}",
