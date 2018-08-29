@@ -46,9 +46,9 @@ class Esatisfaction extends Module
     }
 
     /**
-     * Εγκαθιστά το module στις θέσεις, displayOrderConfirmation,
-     * actionOrderStatusPostUpdate,
-     * displayBackOfficeHeader, displayFooter
+     * Install module and register it for hooks displayOrderConfirmation,
+     * actionOrderStatusPostUpdate, displayHeader,
+     * displayBackOfficeHeader, displayBeforeBodyClosingTag
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
@@ -70,20 +70,13 @@ class Esatisfaction extends Module
                 $this->registerHook('displayHeader');
     }
 
-    /**
-    * Απεγκατάσταση του module
-    *
-    * @author    e-satisfaction SA
-    * @copyright (c) 2018, e-satisfaction SA
-    * @return bool
-    */
     public function uninstall()
     {
         return (bool)parent::uninstall();
     }
     
     /**
-     * Εμφάνιση του διαχειριστικού του module.
+     * Load the configuration page.
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
@@ -182,13 +175,6 @@ class Esatisfaction extends Module
         return $output . $this->displayForm();
     }
 
-    /**
-     * Εμφάνιση του διαχειριστικού του module
-     *
-     * @author    e-satisfaction SA
-     * @copyright (c) 2018, e-satisfaction SA
-     * @return string
-     */
     public function displayForm()
     {
         $fields_form = null;
@@ -493,11 +479,12 @@ class Esatisfaction extends Module
     }
 
     /**
-    * Hook για την φόρτωση του js στη σελίδα διαχείρισης.
+    * Load js file in the configuration page.
     *
     * @author    e-satisfaction SA
     * @copyright (c) 2018, e-satisfaction SA
     * @param array $params
+    * @return void
     */
     public function hookDisplayBackOfficeHeader($params)
     {
@@ -506,26 +493,22 @@ class Esatisfaction extends Module
         }
         $this->context->controller->addJquery();
         $this->context->controller->addJS($this->_path.'views/js/admin.js');
+        return;
 
     }
 
     /**
-     * Hook για την συγκέντρωση στατιστικών
-     * κατά την δημιουργία της παραγγελίας.
+     * Hook after an order is validated.
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
      * @param array $params
-     * @return bool
      */
     public function hookDisplayOrderConfirmation($params)
     {
         if (isset($params['order']) && Validate::isLoadedObject($params['order'])) {
             $customer = new Customer($params['order']->id_customer);
             $invoice_address = new Address($params['order']->id_address_invoice);
-
-            // Χρειάζεται carrier object γιατί αποθηκεύομε reference
-            // και η order έχει το carrier_id
             $carrier = new Carrier($params['order']->id_carrier);
             $is_store_pickup = (in_array(
                 $carrier->id_reference,
@@ -549,21 +532,13 @@ class Esatisfaction extends Module
         }
     }
 
-    /**
-     * Hook για την τοποθέτηση του javascript κωδικού στο footer
-     *
-     * @author    e-satisfaction SA
-     * @copyright (c) 2018, e-satisfaction SA
-     * @param array $params
-     * @return string
-     */
     public function hookDisplayBeforeBodyClosingTag($params)
     {
         return $this->display(__FILE__, 'footer.tpl');
     }
 
     /**
-     * Hook για την τοποθέτηση του javascript κωδικού στο header
+     * Add script in header
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
@@ -580,7 +555,7 @@ class Esatisfaction extends Module
     }
 
     /**
-     * Hook όταν αλλάζει το status μιας παραγγελίας.
+     * Add or remove an item from the queue list if manual send is enabled
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
@@ -627,11 +602,11 @@ class Esatisfaction extends Module
     }
 
     /**
-     * Γίνεται η κλήση στο API.
+     * Make the API call
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param  string $url
+     * @param string $url , string $expected_code , string $method , array $extra_options
      * @return mixed
      */
     public function makeApiCall($url, $data, $expected_code, $method = null, $extra_options = array())
@@ -665,11 +640,11 @@ class Esatisfaction extends Module
     }
 
     /**
-     * Βάση του channel προσθέτει στο queue το νέο item.
+     * Send the questionnaire
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param string $url
+     * @param object $order_obj , object $customer , object $invoice_address , bool $is_store_pickup
      */
     public function sendQuestionnaire($order_obj, $customer, $invoice_address, $is_store_pickup)
     {
@@ -705,7 +680,7 @@ class Esatisfaction extends Module
     }
 
     /**
-     * Αφαιρεί το item από το queue
+     * Remove item from queue
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
@@ -728,11 +703,11 @@ class Esatisfaction extends Module
     }
 
     /**
-     * Δημιουργεί νέα εγγραφή item_id και order_id στη βάση
+     * Create or update item_id and order_id in the database
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param string $url
+     * @param int $order_id , string $item_id
      */
     public function insertQueueItem($order_id, $item_id)
     {
@@ -746,7 +721,7 @@ class Esatisfaction extends Module
     }
 
     /**
-     * Επιστρέφει το item_id από τη βάση
+     * Get the item_id from the database
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
@@ -759,7 +734,7 @@ class Esatisfaction extends Module
     }
 
     /**
-     * Διαγράφει το item_id από τη βάση
+     * Remove item_id from the database
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
