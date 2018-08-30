@@ -13,16 +13,14 @@
  * @license   https://opensource.org/licenses
  * @version 0.3.0
  */
-
 class Esatisfaction extends Module
 {
-
     public $defaultImage = '../modules/esatisfaction/views/img/esat_32x32.png';
     /**
-    *
-    * @var int $app_id Application ID
-    */
+     * @var int $app_id Application ID
+     */
     public $app_id;
+
     public function __construct()
     {
         $this->name = 'esatisfaction';
@@ -42,6 +40,7 @@ class Esatisfaction extends Module
             exit;
         }
     }
+
     /**
      * Install module and register it for hooks displayOrderConfirmation,
      * actionOrderStatusPostUpdate, displayHeader,
@@ -58,13 +57,13 @@ class Esatisfaction extends Module
         `item_id` VARCHAR(100) NOT NULL,
         KEY `id_order` (`id_order`),
         ) ENGINE = MYISAM');
-        
+
         return parent::install() &&
                 $this->registerHook('displayOrderConfirmation') &&
                 $this->registerHook('actionOrderStatusPostUpdate') &&
                 $this->registerHook('displayFooter') &&
                 $this->registerHook('displayBackOfficeHeader') &&
-                $this->registerHook('displayHeader') ;
+                $this->registerHook('displayHeader');
     }
 
     public function uninstall()
@@ -93,21 +92,21 @@ class Esatisfaction extends Module
             if (!$auth || empty($auth)) {
                 $output .= $this->displayError($this->l('Site Auth cannot be empty'));
             }
-           
+
             if (empty($output)) {
                 Configuration::updateValue('ESATISFACTION_APP_ID', $app_id);
                 Configuration::updateValue('ESATISFACTION_AUTH', $auth);
                 $output .= $this->displayConfirmation($this->l('Settings updated'));
             }
-            
+
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_MANUAL_SEND',
                 Tools::getValue('manual_send')
             );
-            
+
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_CHKOUTID',
                 Tools::getValue('ESATISFACTION_CHKOUTID')
             );
@@ -119,9 +118,9 @@ class Esatisfaction extends Module
                 'ESATISFACTION_STRPICKID',
                 Tools::getValue('ESATISFACTION_STRPICKID')
             );
-            
+
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_HOMEDLV_PIPE_ID',
                 Tools::getValue('ESATISFACTION_HOMEDLV_PIPE_ID')
             );
@@ -129,26 +128,26 @@ class Esatisfaction extends Module
                 'ESATISFACTION_STRPICK_PIPE_ID',
                 Tools::getValue('ESATISFACTION_STRPICK_PIPE_ID')
             );
-            
+
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_HOMEDLVID_DAYS',
                 Tools::getValue('ESATISFACTION_HOMEDLVID_DAYS')
             );
-            
+
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_DELIVERED_DLV_OS_IDS',
                 json_encode(Tools::getValue('delivered_dlv_os'))
             );
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_CANCELED_DLV_OS_IDS',
                 json_encode(Tools::getValue('canceled_dlv_os'))
             );
-            
+
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_STOREPICKUP_IDS',
                 json_encode(Tools::getValue('store_pickup_carriers'))
             );
@@ -156,14 +155,14 @@ class Esatisfaction extends Module
                 'ESATISFACTION_COURIER_IDS',
                 json_encode(Tools::getValue('courier_carriers'))
             );
-            
+
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_DELIVERED_STRPICK_OS_IDS',
                 json_encode(Tools::getValue('delivered_strpick_os'))
             );
             Configuration::updateValue(
-            
+
                 'ESATISFACTION_CANCELED_STRPICK_OS_IDS',
                 json_encode(Tools::getValue('canceled_strpick_os'))
             );
@@ -184,19 +183,19 @@ class Esatisfaction extends Module
             $carriers[] = array(
                 'val' => $carrier['id_reference'],
                 'carrier_reference' => $carrier['id_reference'],
-                'name' => $carrier['name']);
+                'name' => $carrier['name'], );
         }
-        
+
         $order_statuses_raw = OrderState::getOrderStates($default_lang);
         $order_statuses = array();
         foreach ($order_statuses_raw as $order_status) {
             $order_statuses[] = array(
                 'val' => $order_status['id_order_state'],
                 'order_state_id' => $order_status['id_order_state'],
-                'name' => $order_status['name']
+                'name' => $order_status['name'],
             );
         }
-        
+
         // Init Fields form array
         $fields_form[0]['form'] = array(
             'legend' => array(
@@ -234,7 +233,7 @@ class Esatisfaction extends Module
                 'class' => 'btn btn-default',
             ),
         );
-        
+
         $fields_form[2]['form'] = array(
             'legend' => array(
                 'title' => $this->l('Manually sending After Delivery / Store Pickup'),
@@ -249,22 +248,22 @@ class Esatisfaction extends Module
                         array(
                             'id' => 'manual_send_on',
                             'value' => 1,
-                            'label' => $this->l('Enabled')
+                            'label' => $this->l('Enabled'),
                         ),
                         array(
                             'id' => 'manual_send_off',
                             'value' => 0,
-                            'label' => $this->l('Disabled')
-                        )
-                    )
-                )
+                            'label' => $this->l('Disabled'),
+                        ),
+                    ),
+                ),
             ),
             'submit' => array(
                 'title' => $this->l('Save'),
                 'class' => 'btn btn-default',
             ),
         );
-    
+
         $fields_form[3]['form'] = array(
             'legend' => array(
                 'title' => $this->l('After Delivery Questionnaire'),
@@ -296,7 +295,7 @@ class Esatisfaction extends Module
                        'query' => $order_statuses,
                        'id' => 'order_state_id',
                        'name'  => 'name',
-                    )
+                    ),
                 ),
                 array(
                     'type' => 'checkbox',
@@ -306,8 +305,8 @@ class Esatisfaction extends Module
                     'values'  => array(
                        'query' => $carriers,
                        'id' => 'carrier_reference',
-                       'name'  => 'name'
-                )),
+                       'name'  => 'name',
+                ), ),
                 array(
                     'type' => 'checkbox',
                     'label' => $this->l('Order status(es) to cancel questionnaire'),
@@ -316,7 +315,7 @@ class Esatisfaction extends Module
                        'query' => $order_statuses,
                        'id' => 'order_state_id',
                        'name'  => 'name',
-                    )
+                    ),
                 )
             ),
             'submit' => array(
@@ -349,7 +348,7 @@ class Esatisfaction extends Module
                        'query' => $order_statuses,
                        'id' => 'order_state_id',
                        'name'  => 'name',
-                    )
+                    ),
                 ),
                 array(
                     'type' => 'checkbox',
@@ -359,8 +358,8 @@ class Esatisfaction extends Module
                     'values'  => array(
                        'query' => $carriers,
                        'id' => 'carrier_reference',
-                       'name'  => 'name'
-                )),
+                       'name'  => 'name',
+                ), ),
                 array(
                     'type' => 'checkbox',
                     'label' => $this->l('Order status(es) to cancel questionnaire'),
@@ -369,15 +368,15 @@ class Esatisfaction extends Module
                        'query' => $order_statuses,
                        'id' => 'order_state_id',
                        'name'  => 'name',
-                    )
-                )
+                    ),
+                ),
             ),
             'submit' => array(
                 'title' => $this->l('Save'),
                 'class' => 'btn btn-default',
             ),
         );
-            
+
         $fields_form[5]['form'] = array(
             'legend' => array(
                 'title' => $this->l('API Authentication Token'),
@@ -396,7 +395,6 @@ class Esatisfaction extends Module
                 'class' => 'btn btn-default',
                 ),
             );
-        
 
         $helper = new HelperForm();
 
@@ -432,14 +430,14 @@ class Esatisfaction extends Module
         $helper->fields_value['ESATISFACTION_CHKOUTID'] = Configuration::get('ESATISFACTION_CHKOUTID');
         $helper->fields_value['ESATISFACTION_HOMEDLVID'] = Configuration::get('ESATISFACTION_HOMEDLVID');
         $helper->fields_value['ESATISFACTION_HOMEDLVID_DAYS'] = Configuration::get('ESATISFACTION_HOMEDLVID_DAYS');
-        
+
         $helper->fields_value['ESATISFACTION_STRPICKID'] = Configuration::get('ESATISFACTION_STRPICKID');
-        
+
         $helper->fields_value['ESATISFACTION_HOMEDLV_PIPE_ID'] = Configuration::get('ESATISFACTION_HOMEDLV_PIPE_ID');
         $helper->fields_value['ESATISFACTION_STRPICK_PIPE_ID'] = Configuration::get('ESATISFACTION_STRPICK_PIPE_ID');
-        
+
         $helper->fields_value['manual_send'] = Configuration::get('ESATISFACTION_MANUAL_SEND');
-        
+
         $delivered_dlv_os = json_decode(Configuration::get('ESATISFACTION_DELIVERED_DLV_OS_IDS'));
         foreach ($delivered_dlv_os as $value) {
             $helper->fields_value['delivered_dlv_os[]_'.$value] = 1;
@@ -452,7 +450,7 @@ class Esatisfaction extends Module
         foreach ($canceled_dlv_os as $value) {
             $helper->fields_value['canceled_dlv_os[]_'.$value] = 1;
         }
-        
+
         $delivered_strpick_os = json_decode(Configuration::get('ESATISFACTION_DELIVERED_STRPICK_OS_IDS'));
         foreach ($delivered_strpick_os as $value) {
             $helper->fields_value['delivered_strpick_os[]_'.$value] = 1;
@@ -465,26 +463,24 @@ class Esatisfaction extends Module
         foreach ($canceled_strpick_os as $value) {
             $helper->fields_value['canceled_strpick_os[]_'.$value] = 1;
         }
-        
-        
-       
+
         $this->context->smarty->assign(array(
             'icon' => $this->defaultImage,
-            'name' => $this->name
+            'name' => $this->name,
         ));
-        
+
         return $this->context->smarty->fetch($this->local_path . 'views/templates/admin/configure.tpl').
         $helper->generateForm($fields_form);
     }
-    
+
     /**
-    * Load js file in the configuration page.
-    *
-    * @author    e-satisfaction SA
-    * @copyright (c) 2018, e-satisfaction SA
-    * @param array $params
-    * @return void
-    */
+     * Load js file in the configuration page.
+     *
+     * @author    e-satisfaction SA
+     * @copyright (c) 2018, e-satisfaction SA
+     * @param array $params
+     * @return void
+     */
     public function hookDisplayBackOfficeHeader($params)
     {
         if (Tools::getValue('configure') != $this->name) {
@@ -492,9 +488,8 @@ class Esatisfaction extends Module
         }
         $this->context->controller->addJquery();
         $this->context->controller->addJS($this->_path.'views/js/admin.js');
-        return;
     }
-    
+
     /**
      * Hook after an order is validated.
      *
@@ -507,13 +502,13 @@ class Esatisfaction extends Module
         if (isset($params['objOrder']) && Validate::isLoadedObject($params['objOrder'])) {
             $customer = new Customer($params['objOrder']->id_customer);
             $invoice_address = new Address($params['objOrder']->id_address_invoice);
-            
+
             $carrier = new Carrier($params['objOrder']->id_carrier);
             $is_store_pickup = (in_array(
                 $carrier->id_reference,
                 json_decode(Configuration::get('ESATISFACTION_STOREPICKUP_IDS'))
             )) ? true : false;
-            
+
             $appid = Configuration::get('ESATISFACTION_APP_ID');
             $quest_id = Configuration::get('ESATISFACTION_CHKOUTID');
             $this->context->smarty->assign(array(
@@ -525,6 +520,7 @@ class Esatisfaction extends Module
                 'is_store_pickup' => $is_store_pickup,
                 'customer_email' => $customer->email,
             ));
+
             return $this->display(__FILE__, 'checkout.tpl');
         } else {
             return false;
@@ -535,13 +531,13 @@ class Esatisfaction extends Module
     {
         return $this->display(__FILE__, 'footer.tpl');
     }
-    
+
     /**
      * Add script in header
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param array $params
+     * @param  array  $params
      * @return string
      */
     public function hookDisplayHeader($params)
@@ -552,13 +548,13 @@ class Esatisfaction extends Module
 
         return $this->display(__FILE__, 'header.tpl');
     }
-    
+
     /**
      * Add or remove an item from the queue list if manual send is enabled
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param array $params
+     * @param  array  $params
      * @return void
      */
     public function hookActionOrderStatusPostUpdate($params)
@@ -566,14 +562,14 @@ class Esatisfaction extends Module
         if (Configuration::get('ESATISFACTION_MANUAL_SEND') == '1') {
             $order_obj = new Order((int) $params['id_order']);
             $customer = new Customer($order_obj->id_customer);
-            
+
             $invoice_address = new Address($order_obj->id_address_invoice);
             $carrier = new Carrier($order_obj->id_carrier);
             $is_store_pickup = (in_array(
                 $carrier->id_reference,
                 json_decode(Configuration::get('ESATISFACTION_STOREPICKUP_IDS'))
             )) ? true : false;
-           
+
             if (in_array(
                 $params['newOrderStatus']->id,
                 json_decode(Configuration::get('ESATISFACTION_DELIVERED_DLV_OS_IDS'))
@@ -584,7 +580,7 @@ class Esatisfaction extends Module
             )) {
                 $this->sendQuestionnaire($order_obj, $customer, $invoice_address, $is_store_pickup);
             }
-           
+
             if ((in_array(
                 $params['newOrderStatus']->id,
                 json_decode(Configuration::get('ESATISFACTION_CANCELED_DLV_OS_IDS'))
@@ -598,13 +594,13 @@ class Esatisfaction extends Module
             }
         }
     }
-    
+
     /**
      * Make the API call
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param string $url , string $expected_code , string $method , array $extra_options
+     * @param  string $url , string $expected_code , string $method , array $extra_options
      * @return mixed
      */
     public function makeApiCall($url, $data, $expected_code, $method = null, $extra_options = array())
@@ -618,25 +614,26 @@ class Esatisfaction extends Module
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_HTTPHEADER => array('esat-auth: '.$auth),
          ));
-         
+
         if ($method) {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         } else {
-            curl_setopt($ch, CURLOPT_POST, 1) ;
+            curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         }
-        
+
         foreach ($extra_options as $option => $value) {
-                curl_setopt($ch, $option, $value);
+            curl_setopt($ch, $option, $value);
         }
-         
-        $res  = curl_exec($ch);
+
+        $res = curl_exec($ch);
         if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == $expected_code) {
             return $res;
         }
+
         return false;
     }
-    
+
     /**
      * Send the questionnaire
      *
@@ -655,20 +652,20 @@ class Esatisfaction extends Module
                 Configuration::get('ESATISFACTION_HOMEDLV_PIPE_ID');
         }
         $url .= '/queue/item';
-        
+
         $data = array(
             'responder_channel_identifier' => $customer->email,
             'locale' => Language::getIsoById($customer->id_lang),
             'metadata' => array(
                 'questionnaire' => array(
                     'transaction_id' => $order_obj->id,
-                    'transaction_date' => $order_obj->date_add
+                    'transaction_date' => $order_obj->date_add,
                 ),
                 'responder' => array(
                       'email' => $customer->email,
-                      'phone_number' => $invoice_address->phone_mobile
-                )
-            )
+                      'phone_number' => $invoice_address->phone_mobile,
+                ),
+            ),
         );
         $res = $this->makeApiCall($url, $data, '201');
         if ($res) {
@@ -676,7 +673,7 @@ class Esatisfaction extends Module
             $this->insertQueueItem($order_obj->id, $res_data->item_id);
         }
     }
-    
+
     /**
      * Remove item from queue
      *
@@ -699,7 +696,7 @@ class Esatisfaction extends Module
             $this->deleteQueueItem($order_obj->id);
         }
     }
-    
+
     /**
      * Create or update item_id and order_id in the database
      *
@@ -711,13 +708,13 @@ class Esatisfaction extends Module
     {
         return Db::getInstance(_PS_USE_SQL_SLAVE_)->insert(
             'esat_order_stat',
-            array( 'id_order' => $order_id ,'item_id' => $item_id ),
+            array('id_order' => $order_id,'item_id' => $item_id),
             false,
             true,
             Db::REPLACE
         );
     }
-    
+
     /**
      * Get the item_id from the database
      *
@@ -727,10 +724,10 @@ class Esatisfaction extends Module
      */
     public function getQueueItem($order_id)
     {
-        $sql = 'SELECT `item_id` FROM `'. _DB_PREFIX_ .'esat_order_stat` WHERE `id_order` = '.(int)$order_id ;
+        $sql = 'SELECT `item_id` FROM `'. _DB_PREFIX_ .'esat_order_stat` WHERE `id_order` = '.(int)$order_id;
         return Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($sql);
     }
-    
+
     /**
      * Remove item_id from the database
      *
