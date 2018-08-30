@@ -35,7 +35,7 @@ class Esatisfaction extends Module
         $this->module_key = '5cd651fbc7befadc249391eb1ef2bf7d';
         $this->bootstrap = true;
         parent::__construct();
-        $this->displayName = $this->l('E-satisfaction tracking module');
+        $this->displayName = $this->l('E-satisfaction Module');
         $this->description = $this->l('Adds the code necessary to gather customer satisfactiond data');
         $this->app_id = Configuration::get('ESATISFACTION_APP_ID');
         if (!defined('_PS_VERSION_')) {
