@@ -509,12 +509,12 @@ class Esatisfaction extends Module
                 json_decode(Configuration::get('ESATISFACTION_STOREPICKUP_IDS'))
             )) ? true : false;
 
-            $appid = Configuration::get('ESATISFACTION_APP_ID');
+            $app_id = Configuration::get('ESATISFACTION_APP_ID');
             $quest_id = Configuration::get('ESATISFACTION_CHKOUTID');
             $this->context->smarty->assign(array(
                 'order_id' => $params['objOrder']->id,
                 'order_date' => $params['objOrder']->date_add,
-                'appid' => $appid,
+                'app_id' => $app_id,
                 'checkout_quest_id' => $quest_id,
                 'customer_phone' => $invoice_address->phone_mobile,
                 'is_store_pickup' => $is_store_pickup,
@@ -543,7 +543,7 @@ class Esatisfaction extends Module
     public function hookDisplayHeader($params)
     {
         $this->context->smarty->assign(array(
-            'appid' => Configuration::get('ESATISFACTION_APP_ID'),
+            'app_id' => Configuration::get('ESATISFACTION_APP_ID'),
         ));
 
         return $this->display(__FILE__, 'header.tpl');
