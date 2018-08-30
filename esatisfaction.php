@@ -496,7 +496,7 @@ class Esatisfaction extends Module
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param  array $params
+     * @param array $params
      */
     public function hookDisplayOrderConfirmation($params)
     {
