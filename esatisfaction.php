@@ -13,6 +13,7 @@
  * @license   https://opensource.org/licenses
  * @version 0.3.0
  */
+
 class Esatisfaction extends Module
 {
     public $defaultImage = '../modules/esatisfaction/views/img/esat_32x32.png';
