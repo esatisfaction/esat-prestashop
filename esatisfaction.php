@@ -176,7 +176,7 @@ class Esatisfaction extends Module
         $fields_form = null;
         // Get default Language
         $default_lang = (int) Configuration::get('PS_LANG_DEFAULT');
-        
+
         $carriers_raw = Carrier::getCarriers($default_lang, true, false);
         $carriers = array();
         foreach ($carriers_raw as $carrier) {
@@ -316,7 +316,7 @@ class Esatisfaction extends Module
                        'id' => 'order_state_id',
                        'name'  => 'name',
                     ),
-                )
+                ),
             ),
             'submit' => array(
                 'title' => $this->l('Save'),
@@ -478,7 +478,7 @@ class Esatisfaction extends Module
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param array $params
+     * @param  array $params
      * @return void
      */
     public function hookDisplayBackOfficeHeader($params)
@@ -554,7 +554,7 @@ class Esatisfaction extends Module
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param  array  $params
+     * @param  array $params
      * @return void
      */
     public function hookActionOrderStatusPostUpdate($params)
@@ -708,7 +708,7 @@ class Esatisfaction extends Module
     {
         return Db::getInstance(_PS_USE_SQL_SLAVE_)->insert(
             'esat_order_stat',
-            array('id_order' => $order_id,'item_id' => $item_id),
+            array('id_order' => $order_id, 'item_id' => $item_id),
             false,
             true,
             Db::REPLACE
@@ -725,6 +725,7 @@ class Esatisfaction extends Module
     public function getQueueItem($order_id)
     {
         $sql = 'SELECT `item_id` FROM `'. _DB_PREFIX_ .'esat_order_stat` WHERE `id_order` = '.(int)$order_id;
+
         return Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($sql);
     }
 
