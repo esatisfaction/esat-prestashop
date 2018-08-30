@@ -53,9 +53,9 @@ class Esatisfaction extends Module
     public function install()
     {
         Db::getInstance(_PS_USE_SQL_SLAVE_)->Execute('CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'esat_order_stat` (
-        `id_order` INT( 11 ) NOT NULL,
+        `order_id` INT( 11 ) NOT NULL,
         `item_id` VARCHAR(100) NOT NULL,
-        KEY `id_order` (`id_order`),
+        KEY `order_id` (`order_id`),
         ) ENGINE = MYISAM');
 
         return parent::install() &&
@@ -708,7 +708,7 @@ class Esatisfaction extends Module
     {
         return Db::getInstance(_PS_USE_SQL_SLAVE_)->insert(
             'esat_order_stat',
-            array('id_order' => $order_id, 'item_id' => $item_id),
+            array('order_id' => $order_id, 'item_id' => $item_id),
             false,
             true,
             Db::REPLACE
@@ -724,7 +724,7 @@ class Esatisfaction extends Module
      */
     public function getQueueItem($order_id)
     {
-        $sql = 'SELECT `item_id` FROM `'. _DB_PREFIX_ .'esat_order_stat` WHERE `id_order` = '.(int)$order_id;
+        $sql = 'SELECT `item_id` FROM `'. _DB_PREFIX_ .'esat_order_stat` WHERE `order_id` = '.(int)$order_id;
 
         return Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($sql);
     }
@@ -738,6 +738,6 @@ class Esatisfaction extends Module
      */
     public function deleteQueueItem($order_id)
     {
-        Db::getInstance(_PS_USE_SQL_SLAVE_)->delete('esat_order_stat', 'id_order = '.$order_id);
+        Db::getInstance(_PS_USE_SQL_SLAVE_)->delete('esat_order_stat', 'order_id = '.$order_id);
     }
 }
