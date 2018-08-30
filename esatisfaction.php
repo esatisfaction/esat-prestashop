@@ -479,7 +479,7 @@ class Esatisfaction extends Module
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param array $params
+     * @param  array $params
      * @return void
      */
     public function hookDisplayBackOfficeHeader($params)
@@ -496,7 +496,7 @@ class Esatisfaction extends Module
      *
      * @author    e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
-     * @param array $params
+     * @param  array $params
      */
     public function hookDisplayOrderConfirmation($params)
     {
@@ -709,7 +709,7 @@ class Esatisfaction extends Module
     {
         return Db::getInstance(_PS_USE_SQL_SLAVE_)->insert(
             'esat_order_stat',
-            array('id_order' => $order_id ,'item_id' => $item_id),
+            array('id_order' => $order_id, 'item_id' => $item_id),
             false,
             true,
             Db::REPLACE
