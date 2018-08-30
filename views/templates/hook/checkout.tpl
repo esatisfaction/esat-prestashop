@@ -15,7 +15,7 @@
 {literal}
 <script>
 window.esat_config = {
-     application_id: "{/literal}{$appid}{literal}",
+     application_id: "{/literal}{$app_id}{literal}",
      collection: { 
         "{/literal}{$checkout_quest_id}{literal}": {
             'questionnaire_id': "{/literal}{$checkout_quest_id}{literal}",

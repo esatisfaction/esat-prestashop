@@ -15,7 +15,7 @@
 {literal}
 <script>
     window.esat_config = {
-        application_id: "{/literal}{$appid}{literal}"
+        application_id: "{/literal}{$app_id}{literal}"
     };
 </script>
 {/literal}
