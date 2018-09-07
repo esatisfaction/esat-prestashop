@@ -10,27 +10,27 @@
  * @author    e-satisfaction SA
  * @copyright 2018 e-satisfaction SA
  * @license   https://opensource.org/licenses
- * @version 0.3.0
+ * @version   1.0.0
  */
 
-jQuery(document).ready(function(){
-	
-	$('input[type=radio][name=manual_send]').change(function() {
-		if (this.value == '1') {
-			$('#fieldset_3_3').slideDown(400);
-			$('#fieldset_4_4').slideDown(400);
-		}
-		else if (this.value == '0') {
-			$('#fieldset_3_3').slideUp(400);
-			$('#fieldset_4_4').slideUp(400);
-		}
-	});
-	
-	if ($('input[type=radio][name=manual_send]').val() = '1'){
-		$('#fieldset_3_3').slideDown(400);
-		$('#fieldset_4_4').slideDown(400);
-	}else{
-		$('#fieldset_3_3').slideUp(400);
-		$('#fieldset_4_4').slideUp(400);
-	}
+jQuery(document).ready(function () {
+
+    $('input[type=radio][name=manual_send]').change(function () {
+        if (this.value == '1') {
+            $('#fieldset_3_3').slideDown(400);
+            $('#fieldset_4_4').slideDown(400);
+        }
+        else if (this.value == '0') {
+            $('#fieldset_3_3').slideUp(400);
+            $('#fieldset_4_4').slideUp(400);
+        }
+    });
+
+    if ($('input[type=radio][name=manual_send]').val() = '1') {
+        $('#fieldset_3_3').slideDown(400);
+        $('#fieldset_4_4').slideDown(400);
+    } else {
+        $('#fieldset_3_3').slideUp(400);
+        $('#fieldset_4_4').slideUp(400);
+    }
 });

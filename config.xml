@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <module>
-	<name>esatisfaction</name>
-	<displayName><![CDATA[E-satisfaction Module]]></displayName>
-	<version><![CDATA[0.3.0]]></version>
-	<description><![CDATA[Adds the code necessary to gather customer satisfactiond data]]></description>
-	<author><![CDATA[e-satisfaction SA]]></author>
-	<tab><![CDATA[analytics_stats]]></tab>
-	<is_configurable>1</is_configurable>
-	<need_instance>0</need_instance>
-	<limited_countries></limited_countries>
+    <name>esatisfaction</name>
+    <displayName><![CDATA[E-satisfaction Module]]></displayName>
+    <version><![CDATA[1.0.0]]></version>
+    <description><![CDATA[Adds the code necessary to gather customer satisfaction data]]></description>
+    <author><![CDATA[e-satisfaction SA]]></author>
+    <tab><![CDATA[analytics_stats]]></tab>
+    <is_configurable>1</is_configurable>
+    <need_instance>0</need_instance>
+    <limited_countries></limited_countries>
 </module>
