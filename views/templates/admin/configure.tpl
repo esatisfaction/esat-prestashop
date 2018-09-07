@@ -16,8 +16,8 @@
         <img src="{$icon|escape:'htmlall':'UTF-8'}" alt="{$name|escape:'htmlall':'UTF-8'}">
     </div>
     <div class="col-lg-12">
-        <h2>Questionnaire container</h2>
-        <p>Place the following element/container on the section where the questionnaire should appear: </p>
-        <p style="background: #ececec">&nbsp;<br><b>&lt;div id="esat-checkout-questionnaire-container"/&gt;</b><br>&nbsp;</p>
+        <h2>Checkout Questionnaire container</h2>
+        <p>On your e-satisfaction.com questionnaire integration settings, set the integration type to
+            <b>embedded</b> and the position to <b>#esat-checkout-questionnaire-container</b>.</p>
     </div>
 </div>
