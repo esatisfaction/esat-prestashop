@@ -10,27 +10,28 @@
  * @author    e-satisfaction SA
  * @copyright 2018 e-satisfaction SA
  * @license   https://opensource.org/licenses
- * @version   1.0.0
+ * @version   1.0.1
  */
+(function ($) {
+    $(document).on('ready', function () {
+        // Initialize display of manual statuses
+        showHideManualSettings();
 
-jQuery(document).ready(function () {
+        // Listen on change
+        $('input[type=radio][name=manual_send]').on('change', function () {
+            showHideManualSettings();
+        });
 
-    $('input[type=radio][name=manual_send]').change(function () {
-        if (this.value == '1') {
-            $('#fieldset_3_3').slideDown(400);
-            $('#fieldset_4_4').slideDown(400);
-        }
-        else if (this.value == '0') {
-            $('#fieldset_3_3').slideUp(400);
-            $('#fieldset_4_4').slideUp(400);
+        function showHideManualSettings() {
+            if ($('input[type=radio][name=manual_send]:checked').val() === '1') {
+                $('#fieldset_3_3').slideDown(400);
+                $('#fieldset_4_4').slideDown(400);
+                $('#fieldset_5_5').slideDown(400);
+            } else {
+                $('#fieldset_3_3').slideUp(400);
+                $('#fieldset_4_4').slideUp(400);
+                $('#fieldset_5_5').slideUp(400);
+            }
         }
     });
-
-    if ($('input[type=radio][name=manual_send]').val() = '1') {
-        $('#fieldset_3_3').slideDown(400);
-        $('#fieldset_4_4').slideDown(400);
-    } else {
-        $('#fieldset_3_3').slideUp(400);
-        $('#fieldset_4_4').slideUp(400);
-    }
-});
+})(jQuery);

@@ -11,7 +11,7 @@
  * @author    e-satisfaction SA
  * @copyright 2018 e-satisfaction SA
  * @license   https://opensource.org/licenses
- * @version   1.0.0
+ * @version   1.0.1
  */
 
 class Esatisfaction extends Module
@@ -27,7 +27,7 @@ class Esatisfaction extends Module
     {
         $this->name = 'esatisfaction';
         $this->tab = 'other';
-        $this->version = '1.0.0';
+        $this->version = '1.0.1';
         $this->author = 'e-satisfaction SA';
         $this->tab = 'analytics_stats';
         $this->need_instance = 0;
@@ -89,10 +89,6 @@ class Esatisfaction extends Module
             $output = null;
             if (!$app_id || empty($app_id)) {
                 $output .= $this->displayError($this->l('Site Id cannot be empty'));
-            }
-
-            if (!$auth || empty($auth)) {
-                $output .= $this->displayError($this->l('Site Auth cannot be empty'));
             }
 
             if (empty($output)) {
@@ -389,7 +385,6 @@ class Esatisfaction extends Module
                     'label' => $this->l('Token'),
                     'name' => 'ESATISFACTION_AUTH',
                     'size' => 45,
-                    'required' => true,
                 ),
             ),
             'submit' => array(
