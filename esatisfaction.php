@@ -90,10 +90,6 @@ class Esatisfaction extends Module
                 $output .= $this->displayError($this->l('Site Id cannot be empty'));
             }
 
-            if (!$auth || empty($auth)) {
-                $output .= $this->displayError($this->l('Site Auth cannot be empty'));
-            }
-
             if (empty($output)) {
                 Configuration::updateValue('ESATISFACTION_APP_ID', $app_id);
                 Configuration::updateValue('ESATISFACTION_AUTH', $auth);
@@ -388,7 +384,6 @@ class Esatisfaction extends Module
                     'label' => $this->l('Token'),
                     'name' => 'ESATISFACTION_AUTH',
                     'size' => 45,
-                    'required' => true,
                 ),
             ),
             'submit' => array(
