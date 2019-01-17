@@ -663,6 +663,15 @@ class Esatisfaction extends Module
                 ),
             ),
         );
+
+        // Check for delay days
+        $delayDays = Configuration::get('ESATISFACTION_HOMEDLVID_DAYS');
+        if (!$is_store_pickup && $delayDays > 0) {
+            $sendTime = (new DateTime())->add(new DateInterval(sprintf('P%sD', $delayDays)));
+            $data['send_time'] = $sendTime->format(DateTime::ATOM);
+        }
+
+        // Make API Call
         $res = $this->makeApiCall($url, $data, '201');
         if ($res) {
             $res_data = json_decode($res);
