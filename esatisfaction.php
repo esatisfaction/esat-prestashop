@@ -11,7 +11,7 @@
  * @author    e-satisfaction SA
  * @copyright 2018 e-satisfaction SA
  * @license   https://opensource.org/licenses
- * @version   1.0.1
+ * @version   1.0.2
  */
 
 class Esatisfaction extends Module
@@ -33,7 +33,7 @@ class Esatisfaction extends Module
     {
         $this->name = 'esatisfaction';
         $this->tab = 'other';
-        $this->version = '1.0.1';
+        $this->version = '1.0.2';
         $this->author = 'e-satisfaction SA';
         $this->tab = 'analytics_stats';
         $this->need_instance = 0;
@@ -616,7 +616,7 @@ class Esatisfaction extends Module
         $pipelineId = $is_store_pickup ? Configuration::get('ESATISFACTION_STRPICK_PIPE_ID') : Configuration::get('ESATISFACTION_HOMEDLV_PIPE_ID');
 
         // Form url
-        $url = sprintf('https://api.e-satisfaction.com/v3.0/q/questionnaire/%s/pipeline/%s/queue/item', $questionnaireId, $pipelineId);
+        $url = sprintf('https://api.e-satisfaction.com/v3.1/q/questionnaire/%s/pipeline/%s/queue/item', $questionnaireId, $pipelineId);
 
         // Create data
         $data = array(
@@ -659,7 +659,7 @@ class Esatisfaction extends Module
      */
     public function cancelQuestionnaire($order_obj)
     {
-        $url = 'https://api.e-satisfaction.com/v3.0/q/queue/item/';
+        $url = 'https://api.e-satisfaction.com/v3.1/q/queue/item/';
         $item_id = $this->getQueueItem($order_obj->id);
         $extra_options = array(
             CURLOPT_FRESH_CONNECT => 1,
