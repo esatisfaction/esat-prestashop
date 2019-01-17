@@ -462,7 +462,7 @@ class Esatisfaction extends Module
             return false;
         }
 
-            $customer = new Customer($params['objOrder']->id_customer);
+        $customer = new Customer($params['objOrder']->id_customer);
         $invoice_address = new Address($params['objOrder']->id_address_invoice);
 
         $carrier = new Carrier($params['objOrder']->id_carrier);
