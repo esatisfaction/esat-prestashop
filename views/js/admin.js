@@ -10,7 +10,7 @@
  * @author    e-satisfaction SA
  * @copyright 2018 e-satisfaction SA
  * @license   https://opensource.org/licenses
- * @version   1.0.1
+ * @version   1.0.2
  */
 (function ($) {
     $(document).on('ready', function () {
