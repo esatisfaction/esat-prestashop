@@ -64,7 +64,7 @@ class Esatisfaction extends Module
         `order_id` INT( 11 ) NOT NULL,
         `item_id` VARCHAR(100) NOT NULL,
         KEY `order_id` (`order_id`),
-        ) ENGINE = MYISAM');
+        ) ENGINE = InnoDB');
 
         return parent::install() &&
             $this->registerHook('displayOrderConfirmation') &&
