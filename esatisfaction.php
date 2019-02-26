@@ -51,8 +51,7 @@ class Esatisfaction extends Module
 
     /**
      * Install module and register it for hooks displayOrderConfirmation,
-     * actionOrderStatusPostUpdate, displayHeader,
-     * displayBackOfficeHeader, displayBeforeBodyClosingTag
+     * actionOrderStatusPostUpdate, displayHeader, displayBackOfficeHeader
      *
      * @author        e-satisfaction SA
      * @copyright (c) 2018, e-satisfaction SA
@@ -69,7 +68,6 @@ class Esatisfaction extends Module
         return parent::install() &&
             $this->registerHook('displayOrderConfirmation') &&
             $this->registerHook('actionOrderStatusPostUpdate') &&
-            $this->registerHook('displayBeforeBodyClosingTag') &&
             $this->registerHook('displayBackOfficeHeader') &&
             $this->registerHook('displayHeader');
     }
@@ -476,21 +474,6 @@ class Esatisfaction extends Module
         ));
 
         return $this->display(__FILE__, 'checkout.tpl');
-    }
-
-    /**
-     * Display footer
-     *
-     * @author        e-satisfaction SA
-     * @copyright (c) 2018, e-satisfaction SA
-     *
-     * @param array $params
-     *
-     * @return string
-     */
-    public function hookDisplayBeforeBodyClosingTag($params)
-    {
-        return $this->display(__FILE__, 'footer.tpl');
     }
 
     /**
