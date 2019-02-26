@@ -12,7 +12,4 @@
  *  @license   https://opensource.org/licenses
  *}
 <!-- E-sat footer code -->
-
-<script src="https://collection.e-satisfaction.com/dist/js/integration.min.js"></script>
-
 <!-- /E-sat footer code -->
