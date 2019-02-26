@@ -14,25 +14,17 @@
 <!-- E-sat order confirmation code -->
 {literal}
 <script>
-window.esat_config = {
-     application_id: "{/literal}{$app_id}{literal}",
-     collection: { 
-        "{/literal}{$checkout_quest_id}{literal}": {
-            'questionnaire_id': "{/literal}{$checkout_quest_id}{literal}",
-             'metadata' : {
-                  'responder' : {
-                    'email': "{/literal}{$customer_email}{literal}",
-                    'phone_number': "{/literal}{$customer_phone}{literal}"
-                  },
-                  'questionnaire' : {
-                    'transaction_id': "{/literal}{$order_id}{literal}",
-                    'transaction_date': "{/literal}{$order_date}{literal}",
-                    'store_pickup': {/literal}{$is_store_pickup}{literal}
-                  }
-             }
+    Esat.updateMetadata("{/literal}{$checkout_quest_id}{literal}", {
+        responder: {
+            "email": "{/literal}{$customer_email}{literal}",
+            "phone_number": "{/literal}{$customer_phone}{literal}"
+        },
+        questionnaire: {
+            "transaction_id": "{/literal}{$order_id}{literal}",
+            "transaction_date": "{/literal}{$order_date}{literal}",
+            "store_pickup": {/literal}{$is_store_pickup}{literal}
         }
-     }
-};
+    });
 </script>
 {/literal}
 <div id="esat-checkout-questionnaire-container"></div>
