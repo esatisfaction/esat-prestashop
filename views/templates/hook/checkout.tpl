@@ -16,13 +16,13 @@
 <script>
     Esat.updateMetadata("{/literal}{$checkout_quest_id|escape:'htmlall':'UTF-8'}{literal}", {
         responder: {
-            'email': "{/literal}{$customer_email|escape:'htmlall':'UTF-8'}{literal}",
-            'phone_number': "{/literal}{$customer_phone|escape:'htmlall':'UTF-8'}{literal}"
+            "email": "{/literal}{$customer_email|escape:'htmlall':'UTF-8'}{literal}",
+            "phone_number": "{/literal}{$customer_phone|escape:'htmlall':'UTF-8'}{literal}"
         },
         questionnaire: {
-            'transaction_id': "{/literal}{$order_id|escape:'htmlall':'UTF-8'}{literal}",
-            'transaction_date': "{/literal}{$order_date|escape:'htmlall':'UTF-8'}{literal}",
-            'store_pickup': {/literal}{$is_store_pickup|escape:'htmlall':'UTF-8'}{literal}
+            "transaction_id": "{/literal}{$order_id|escape:'htmlall':'UTF-8'}{literal}",
+            "transaction_date": "{/literal}{$order_date|escape:'htmlall':'UTF-8'}{literal}",
+            "store_pickup": {/literal}{$is_store_pickup|escape:'htmlall':'UTF-8'}{literal}
         }
     });
 </script>
