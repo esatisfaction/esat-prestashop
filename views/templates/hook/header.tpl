@@ -14,9 +14,25 @@
 <!-- E-sat header code -->
 {literal}
 <script>
-    window.esat_config = {
-        application_id: "{/literal}{$app_id}{literal}"
-    };
+    (function (win, doc, application_id, jq, collection) {
+        // Define e-satisfaction collection configuration
+        win.esat_config = {application_id: application_id, collection: collection || {}};
+
+        // Update metadata
+        win.Esat = win.Esat || {};
+        win.Esat.updateMetadata = function (questionnaireId, metadata) {
+            win.esat_config.collection[questionnaireId] = win.esat_config.collection[questionnaireId] || {};
+            win.esat_config.collection[questionnaireId].metadata = metadata;
+        };
+
+        // Setup script
+        doc.addEventListener('DOMContentLoaded', function () {
+            var body = doc.getElementsByTagName('body')[0], script = doc.createElement('script');
+            script.async = true;
+            script.src = 'https://collection.e-satisfaction.com/dist/js/integration' + (!!jq ? '' : '.jq') + '.min.js';
+            body.appendChild(script);
+        });
+    })(window, document, "{/literal}{$app_id}{literal}", false, {});
 </script>
 {/literal}
 <!-- /E-sat header code -->
