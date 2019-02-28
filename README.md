@@ -39,4 +39,5 @@ You should be able to find the module in your menu.
 
 ### Changelog
 
-* [Prestashop 1.7 Changelog](CHANGELOG-1.0.md)
+* [Prestashop 1.7 Changelog](CHANGELOG-1.7.md)
+* [Prestashop 1.6 Changelog](CHANGELOG-1.6.md)
