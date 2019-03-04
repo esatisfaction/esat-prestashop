@@ -29,7 +29,7 @@
         doc.addEventListener('DOMContentLoaded', function () {
             var body = doc.getElementsByTagName('body')[0], script = doc.createElement('script');
             script.async = true;
-            script.src = 'https://collection.e-satisfaction.com/dist/js/integration' + (!!jq ? '' : '.jq') + '.min.js';
+            script.src = 'https://collection.e-satisfaction.com/dist/js/integration' + (!!jq ? '.jq' : '') + '.min.js';
             body.appendChild(script);
         });
     })(window, document, "{/literal}{$app_id|escape:'htmlall':'UTF-8'}{literal}", false, {});
