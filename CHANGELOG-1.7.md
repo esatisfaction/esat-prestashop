@@ -8,6 +8,7 @@ To get the diff for a specific change, go to https://github.com/esatisfaction/es
 XXX is the change hash
 
 * 1.0.4 (future-release)
+  * Fix integration logic to get jQuery version properly
 * 1.0.3 (2019-02-28)
   * Update the integration script to match the latest (25th February, 2019) e-satisfaction integration guidelines.
 * 1.0.2 (2019-01-17)
