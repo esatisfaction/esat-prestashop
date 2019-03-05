@@ -11,6 +11,8 @@ This branch is targeting Prestashop v1.6
 This branch is compatible with the following prestashop versions:
 * `Prestashop v1.6.*`
 
+If you are working on the e-satisfaction v1.0, you should check [legacy-1.6](https://github.com/esatisfaction/esat-prestashop/tree/legacy-1.6).
+
 ### Installation
 
 1. Download release zip
