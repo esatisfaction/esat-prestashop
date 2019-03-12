@@ -29,19 +29,12 @@ You should be able to find the module in your menu.
 
 #### Prestashop 1.7
 
-* [e-satisfaction Prestashop v1.0.4](https://github.com/esatisfaction/esat-prestashop/releases/tag/v1.0.4-presta-1.7)
-* [e-satisfaction Prestashop v1.0.3](https://github.com/esatisfaction/esat-prestashop/releases/tag/v1.0.3-presta-1.7)
-* [e-satisfaction Prestashop v1.0.2](https://github.com/esatisfaction/esat-prestashop/releases/tag/v1.0.2-presta-1.7)
-* [e-satisfaction Prestashop v1.0.1](https://github.com/esatisfaction/esat-prestashop/releases/tag/v1.0.1-presta-1.7)
+Check the latest releases on the [Release Page](https://github.com/esatisfaction/esat-prestashop/releases), the ones with `presta-1.7` suffix.
+
+[Prestashop 1.7 Changelog](CHANGELOG-1.7.md)
 
 #### Prestashop 1.6
 
-* [e-satisfaction Prestashop v1.0.4](https://github.com/esatisfaction/esat-prestashop/releases/tag/v1.0.4-presta-1.6)
-* [e-satisfaction Prestashop v1.0.3](https://github.com/esatisfaction/esat-prestashop/releases/tag/v1.0.3-presta-1.6)
-* [e-satisfaction Prestashop v1.0.2](https://github.com/esatisfaction/esat-prestashop/releases/tag/v1.0.2-presta-1.6)
-* [e-satisfaction Prestashop v1.0.1](https://github.com/esatisfaction/esat-prestashop/releases/tag/v1.0.1-presta-1.6)
+Check the latest releases on the [Release Page](https://github.com/esatisfaction/esat-prestashop/releases), the ones with `presta-1.6` suffix.
 
-### Changelog
-
-* [Prestashop 1.7 Changelog](CHANGELOG-1.7.md)
-* [Prestashop 1.6 Changelog](CHANGELOG-1.6.md)
+[Prestashop 1.6 Changelog](CHANGELOG-1.6.md)
