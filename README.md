@@ -27,10 +27,7 @@ You should be able to find the module in your menu.
 
 #### Prestashop 1.6
 
-* [e-satisfaction Prestashop v1.0.4](https://github.com/esatisfaction/esat-prestashop/releases/tag/v1.0.4-presta-1.6)
-* [e-satisfaction Prestashop v1.0.3](https://github.com/esatisfaction/esat-prestashop/releases/tag/v1.0.3-presta-1.6)
-* [e-satisfaction Prestashop v1.0.2](https://github.com/esatisfaction/esat-prestashop/releases/tag/v1.0.2-presta-1.6)
-* [e-satisfaction Prestashop v1.0.1](https://github.com/esatisfaction/esat-prestashop/releases/tag/v1.0.1-presta-1.6)
+Check the latest releases on the [Release Page](https://github.com/esatisfaction/esat-prestashop/releases), the ones with `presta-1.6` suffix.
 
 ### Changelog
 
