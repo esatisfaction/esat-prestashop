@@ -8,6 +8,7 @@ To get the diff for a specific change, go to https://github.com/esatisfaction/es
 XXX is the change hash
 
 * 1.0.5 (future-release)
+  * Change $is_store_pickup variable from boolean to string
 * 1.0.4 (2019-03-05)
   * Fix integration logic to get jQuery version properly
 * 1.0.3 (2019-02-28)
