@@ -468,7 +468,7 @@ class Esatisfaction extends Module
         $is_store_pickup = (in_array(
             $carrier->id_reference,
             json_decode(Configuration::get('ESATISFACTION_STOREPICKUP_IDS'))
-        )) ? true : false;
+        )) ? 'true' : 'false';
 
         $app_id = Configuration::get('ESATISFACTION_APP_ID');
         $quest_id = Configuration::get('ESATISFACTION_CHKOUTID');
