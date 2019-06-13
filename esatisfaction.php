@@ -63,7 +63,7 @@ class Esatisfaction extends Module
         Db::getInstance()->Execute('CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'esat_order_stat` (
         `order_id` INT( 11 ) NOT NULL,
         `item_id` VARCHAR(100) NOT NULL,
-        KEY `order_id` (`order_id`),
+        PRIMARY KEY (`order_id`)
         ) ENGINE = InnoDB');
 
         return parent::install() &&
