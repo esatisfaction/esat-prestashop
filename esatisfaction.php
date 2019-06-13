@@ -11,7 +11,7 @@
  * @author    e-satisfaction SA
  * @copyright 2018 e-satisfaction SA
  * @license   https://opensource.org/licenses
- * @version   1.0.4
+ * @version   1.1.0
  */
 
 class Esatisfaction extends Module
@@ -33,7 +33,7 @@ class Esatisfaction extends Module
     {
         $this->name = 'esatisfaction';
         $this->tab = 'other';
-        $this->version = '1.0.4';
+        $this->version = '1.1.0';
         $this->author = 'e-satisfaction SA';
         $this->tab = 'analytics_stats';
         $this->need_instance = 0;
@@ -63,7 +63,7 @@ class Esatisfaction extends Module
         Db::getInstance()->Execute('CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'esat_order_stat` (
         `order_id` INT( 11 ) NOT NULL,
         `item_id` VARCHAR(100) NOT NULL,
-        KEY `order_id` (`order_id`),
+        PRIMARY KEY (`order_id`)
         ) ENGINE = InnoDB');
 
         return parent::install() &&
@@ -93,6 +93,7 @@ class Esatisfaction extends Module
         $output = null;
         if (Tools::isSubmit('submit' . $this->name)) {
             $app_id = Tools::getValue('ESATISFACTION_APP_ID');
+            $domain = Tools::getValue('ESATISFACTION_DOMAIN');
             $auth = Tools::getValue('ESATISFACTION_AUTH');
             $output = null;
             if (!$app_id || empty($app_id)) {
@@ -101,6 +102,7 @@ class Esatisfaction extends Module
 
             if (empty($output)) {
                 Configuration::updateValue('ESATISFACTION_APP_ID', $app_id);
+                Configuration::updateValue('ESATISFACTION_DOMAIN', $domain);
                 Configuration::updateValue('ESATISFACTION_AUTH', $auth);
                 $output .= $this->displayConfirmation($this->l('Settings updated'));
             }
@@ -166,6 +168,13 @@ class Esatisfaction extends Module
                     'type' => 'text',
                     'label' => $this->l('Application Id'),
                     'name' => 'ESATISFACTION_APP_ID',
+                    'size' => 20,
+                    'required' => true,
+                ),
+                array(
+                    'type' => 'text',
+                    'label' => $this->l('Working Domain'),
+                    'name' => 'ESATISFACTION_DOMAIN',
                     'size' => 20,
                     'required' => true,
                 ),
@@ -385,6 +394,7 @@ class Esatisfaction extends Module
         );
         // Load current value
         $helper->fields_value['ESATISFACTION_APP_ID'] = Configuration::get('ESATISFACTION_APP_ID');
+        $helper->fields_value['ESATISFACTION_DOMAIN'] = Configuration::get('ESATISFACTION_DOMAIN');
         $helper->fields_value['ESATISFACTION_AUTH'] = Configuration::get('ESATISFACTION_AUTH');
         $helper->fields_value['ESATISFACTION_CHKOUTID'] = Configuration::get('ESATISFACTION_CHKOUTID');
         $helper->fields_value['ESATISFACTION_HOMEDLVID'] = Configuration::get('ESATISFACTION_HOMEDLVID');
@@ -560,22 +570,26 @@ class Esatisfaction extends Module
      */
     public function makeApiCall($url, $data, $expected_code, $method = null, $extra_options = array())
     {
+        // e-satisfaction API base url
+        $baseUrl = 'https://api.e-satisfaction.com/v3.2';
+
         $auth = Configuration::get('ESATISFACTION_AUTH');
+        $domain = Configuration::get('ESATISFACTION_DOMAIN');
         $ch = curl_init();
         curl_setopt_array($ch, array(
-            CURLOPT_URL => $url,
+            CURLOPT_URL => sprintf('%s/%s', $baseUrl, $url),
             CURLOPT_HEADER => false,
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_HTTPHEADER => array('esat-auth: '.$auth),
-         ));
+            CURLOPT_HTTPHEADER => array('esat-auth: ' . $auth, 'esat-domain: ' . $domain),
+        ));
 
         if ($method) {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         } else {
             curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         }
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 
         foreach ($extra_options as $option => $value) {
             curl_setopt($ch, $option, $value);
@@ -609,7 +623,7 @@ class Esatisfaction extends Module
         $pipelineId = $is_store_pickup ? Configuration::get('ESATISFACTION_STRPICK_PIPE_ID') : Configuration::get('ESATISFACTION_HOMEDLV_PIPE_ID');
 
         // Form url
-        $url = sprintf('https://api.e-satisfaction.com/v3.1/q/questionnaire/%s/pipeline/%s/queue/item', $questionnaireId, $pipelineId);
+        $url = sprintf('/q/questionnaire/%s/pipeline/%s/queue/item', $questionnaireId, $pipelineId);
 
         // Create data
         $data = array(
@@ -652,15 +666,13 @@ class Esatisfaction extends Module
      */
     public function cancelQuestionnaire($order_obj)
     {
-        $url = 'https://api.e-satisfaction.com/v3.1/q/queue/item/';
         $item_id = $this->getQueueItem($order_obj->id);
-        $extra_options = array(
-            CURLOPT_FRESH_CONNECT => 1,
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_FORBID_REUSE => 1,
-            CURLOPT_TIMEOUT => 4,
+        $url = sprintf('/q/queue/item/%s', $item_id);
+        $data = array(
+            'status_id' => 5,
+            'result' => 'Order cancelled from Prestashop Admin',
         );
-        $res = $this->makeApiCall($url.$item_id, array(), '204', 'DELETE', $extra_options);
+        $res = $this->makeApiCall($url, $data, '200', 'PATCH');
         if ($res !== false) {
             $this->deleteQueueItem($order_obj->id);
         }
@@ -700,7 +712,7 @@ class Esatisfaction extends Module
      */
     public function getQueueItem($order_id)
     {
-        $sql = 'SELECT `item_id` FROM `'. _DB_PREFIX_ .'esat_order_stat` WHERE `order_id` = '.(int)$order_id;
+        $sql = 'SELECT `item_id` FROM `' . _DB_PREFIX_ . 'esat_order_stat` WHERE `order_id` = ' . (int)$order_id;
 
         return Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($sql);
     }
@@ -715,6 +727,6 @@ class Esatisfaction extends Module
      */
     public function deleteQueueItem($order_id)
     {
-        Db::getInstance()->delete('esat_order_stat', 'order_id = '.$order_id);
+        Db::getInstance()->delete('esat_order_stat', 'order_id = ' . $order_id);
     }
 }
