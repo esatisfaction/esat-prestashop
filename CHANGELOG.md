@@ -10,6 +10,7 @@ XXX is the change hash
 * 1.1.0
   * Use e-satisfaction working domain
   * Work with api v3.2
+  * Update integration code to latest
 
 * 1.0.4
   * Fix integration logic to get jQuery version properly
