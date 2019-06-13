@@ -14,7 +14,7 @@ XXX is the change hash
 
 * 1.0.5
   * Change $is_store_pickup variable from boolean to string
-* 1.1.0
+* 1.0.4
   * Fix integration logic to get jQuery version properly
 * 1.0.3
   * Update the integration script to match the latest (25th February, 2019) e-satisfaction integration guidelines.
