@@ -235,6 +235,24 @@ class Esatisfaction extends Module
 
         $fields_form[3]['form'] = array(
             'legend' => array(
+                'title' => $this->l('API Authentication Token'),
+            ),
+            'input' => array(
+                array(
+                    'type' => 'text',
+                    'label' => $this->l('Token'),
+                    'name' => 'ESATISFACTION_AUTH',
+                    'size' => 45,
+                ),
+            ),
+            'submit' => array(
+                'title' => $this->l('Save'),
+                'class' => 'btn btn-default',
+            ),
+        );
+
+        $fields_form[4]['form'] = array(
+            'legend' => array(
                 'title' => $this->l('After Delivery Questionnaire'),
             ),
             'input' => array(
@@ -292,7 +310,7 @@ class Esatisfaction extends Module
                 'class' => 'btn btn-default',
             ),
         );
-        $fields_form[4]['form'] = array(
+        $fields_form[5]['form'] = array(
             'legend' => array(
                 'title' => $this->l('Store Pick Up Questionnaire'),
             ),
@@ -345,24 +363,6 @@ class Esatisfaction extends Module
                 'class' => 'btn btn-default',
             ),
         );
-
-        $fields_form[5]['form'] = array(
-            'legend' => array(
-                'title' => $this->l('API Authentication Token'),
-            ),
-            'input' => array(
-                array(
-                    'type' => 'text',
-                    'label' => $this->l('Token'),
-                    'name' => 'ESATISFACTION_AUTH',
-                    'size' => 45,
-                ),
-            ),
-            'submit' => array(
-                'title' => $this->l('Save'),
-                'class' => 'btn btn-default',
-                ),
-            );
 
         $helper = new HelperForm();
 
