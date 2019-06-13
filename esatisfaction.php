@@ -42,7 +42,7 @@ class Esatisfaction extends Module
         $this->bootstrap = true;
         parent::__construct();
         $this->displayName = $this->l('E-satisfaction Module');
-        $this->description = $this->l('Adds the code necessary to gather customer satisfactiond data');
+        $this->description = $this->l('Adds the code necessary to gather customer e-satisfaction data');
         $this->app_id = Configuration::get('ESATISFACTION_APP_ID');
         if (!defined('_PS_VERSION_')) {
             exit;
