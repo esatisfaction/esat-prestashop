@@ -7,7 +7,10 @@ in all versions (major and minor)
 To get the diff for a specific change, go to https://github.com/esatisfaction/esat-prestashop/commit/XXX where
 XXX is the change hash
 
-* 1.0.5
+* 1.1.0
+  * Use e-satisfaction working domain
+  * Work with api v3.2
+
 * 1.0.4
   * Fix integration logic to get jQuery version properly
 * 1.0.3
