@@ -27,14 +27,6 @@ You should be able to find the module in your menu.
 
 ### Releases
 
-#### Prestashop 1.7
-
 Check the latest releases on the [Release Page](https://github.com/esatisfaction/esat-prestashop/releases), the ones with `presta-1.7` suffix.
 
-[Prestashop 1.7 Changelog](CHANGELOG-1.7.md)
-
-#### Prestashop 1.6
-
-Check the latest releases on the [Release Page](https://github.com/esatisfaction/esat-prestashop/releases), the ones with `presta-1.6` suffix.
-
-[Prestashop 1.6 Changelog](CHANGELOG-1.6.md)
+[Changelog](CHANGELOG-1.7.md)

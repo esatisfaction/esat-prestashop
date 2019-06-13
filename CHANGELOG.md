@@ -1,4 +1,4 @@
-CHANGELOG for 1.6.x
+CHANGELOG for 1.7.x
 ===================
 
 This changelog references the relevant changes (bug and security fixes) done
@@ -7,8 +7,10 @@ in all versions (major and minor)
 To get the diff for a specific change, go to https://github.com/esatisfaction/esat-prestashop/commit/XXX where
 XXX is the change hash
 
-* 1.0.5
-  * Change `$is_store_pickup` variable from boolean to string
+* 1.1.0
+  * Use e-satisfaction working domain
+  * Work with api v3.2
+
 * 1.0.4
   * Fix integration logic to get jQuery version properly
 * 1.0.3
