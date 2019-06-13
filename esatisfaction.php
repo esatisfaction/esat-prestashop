@@ -93,6 +93,7 @@ class Esatisfaction extends Module
         $output = null;
         if (Tools::isSubmit('submit' . $this->name)) {
             $app_id = Tools::getValue('ESATISFACTION_APP_ID');
+            $domain = Tools::getValue('ESATISFACTION_DOMAIN');
             $auth = Tools::getValue('ESATISFACTION_AUTH');
             $output = null;
             if (!$app_id || empty($app_id)) {
@@ -101,6 +102,7 @@ class Esatisfaction extends Module
 
             if (empty($output)) {
                 Configuration::updateValue('ESATISFACTION_APP_ID', $app_id);
+                Configuration::updateValue('ESATISFACTION_DOMAIN', $domain);
                 Configuration::updateValue('ESATISFACTION_AUTH', $auth);
                 $output .= $this->displayConfirmation($this->l('Settings updated'));
             }
@@ -166,6 +168,13 @@ class Esatisfaction extends Module
                     'type' => 'text',
                     'label' => $this->l('Application Id'),
                     'name' => 'ESATISFACTION_APP_ID',
+                    'size' => 20,
+                    'required' => true,
+                ),
+                array(
+                    'type' => 'text',
+                    'label' => $this->l('Working Domain'),
+                    'name' => 'ESATISFACTION_DOMAIN',
                     'size' => 20,
                     'required' => true,
                 ),
@@ -385,6 +394,7 @@ class Esatisfaction extends Module
         );
         // Load current value
         $helper->fields_value['ESATISFACTION_APP_ID'] = Configuration::get('ESATISFACTION_APP_ID');
+        $helper->fields_value['ESATISFACTION_DOMAIN'] = Configuration::get('ESATISFACTION_DOMAIN');
         $helper->fields_value['ESATISFACTION_AUTH'] = Configuration::get('ESATISFACTION_AUTH');
         $helper->fields_value['ESATISFACTION_CHKOUTID'] = Configuration::get('ESATISFACTION_CHKOUTID');
         $helper->fields_value['ESATISFACTION_HOMEDLVID'] = Configuration::get('ESATISFACTION_HOMEDLVID');
@@ -567,8 +577,8 @@ class Esatisfaction extends Module
             CURLOPT_HEADER => false,
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_HTTPHEADER => array('esat-auth: '.$auth),
-         ));
+            CURLOPT_HTTPHEADER => array('esat-auth: ' . $auth, 'esat-domain: ' . $domain),
+        ));
 
         if ($method) {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
