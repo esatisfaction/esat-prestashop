@@ -681,7 +681,7 @@ class Esatisfaction extends Module
      */
     public function insertQueueItem($order_id, $item_id)
     {
-        return Db::getInstance(_PS_USE_SQL_SLAVE_)->insert(
+        return Db::getInstance()->insert(
             'esat_order_stat',
             array('order_id' => $order_id, 'item_id' => $item_id),
             false,
@@ -704,7 +704,7 @@ class Esatisfaction extends Module
     {
         $sql = 'SELECT `item_id` FROM `'. _DB_PREFIX_ .'esat_order_stat` WHERE `order_id` = '.(int)$order_id;
 
-        return Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($sql);
+        return Db::getInstance()->getValue($sql);
     }
 
     /**
@@ -717,6 +717,6 @@ class Esatisfaction extends Module
      */
     public function deleteQueueItem($order_id)
     {
-        Db::getInstance(_PS_USE_SQL_SLAVE_)->delete('esat_order_stat', 'order_id = '.$order_id);
+        Db::getInstance()->delete('esat_order_stat', 'order_id = '.$order_id);
     }
 }
