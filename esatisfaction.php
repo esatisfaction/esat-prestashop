@@ -570,10 +570,14 @@ class Esatisfaction extends Module
      */
     public function makeApiCall($url, $data, $expected_code, $method = null, $extra_options = array())
     {
+        // e-satisfaction API base url
+        $baseUrl = 'https://api.e-satisfaction.com/v3.2';
+
         $auth = Configuration::get('ESATISFACTION_AUTH');
+        $domain = Configuration::get('ESATISFACTION_DOMAIN');
         $ch = curl_init();
         curl_setopt_array($ch, array(
-            CURLOPT_URL => $url,
+            CURLOPT_URL => sprintf('%s/%s', $baseUrl, $url),
             CURLOPT_HEADER => false,
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_SSL_VERIFYPEER => false,
@@ -584,8 +588,8 @@ class Esatisfaction extends Module
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         } else {
             curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         }
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 
         foreach ($extra_options as $option => $value) {
             curl_setopt($ch, $option, $value);
@@ -619,7 +623,7 @@ class Esatisfaction extends Module
         $pipelineId = $is_store_pickup ? Configuration::get('ESATISFACTION_STRPICK_PIPE_ID') : Configuration::get('ESATISFACTION_HOMEDLV_PIPE_ID');
 
         // Form url
-        $url = sprintf('https://api.e-satisfaction.com/v3.1/q/questionnaire/%s/pipeline/%s/queue/item', $questionnaireId, $pipelineId);
+        $url = sprintf('/q/questionnaire/%s/pipeline/%s/queue/item', $questionnaireId, $pipelineId);
 
         // Create data
         $data = array(
@@ -662,15 +666,13 @@ class Esatisfaction extends Module
      */
     public function cancelQuestionnaire($order_obj)
     {
-        $url = 'https://api.e-satisfaction.com/v3.1/q/queue/item/';
         $item_id = $this->getQueueItem($order_obj->id);
-        $extra_options = array(
-            CURLOPT_FRESH_CONNECT => 1,
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_FORBID_REUSE => 1,
-            CURLOPT_TIMEOUT => 4,
+        $url = sprintf('/q/queue/item/%s', $item_id);
+        $data = array(
+            'status_id' => 5,
+            'result' => 'Order cancelled from Prestashop Admin',
         );
-        $res = $this->makeApiCall($url.$item_id, array(), '204', 'DELETE', $extra_options);
+        $res = $this->makeApiCall($url, $data, '200', 'PATCH');
         if ($res !== false) {
             $this->deleteQueueItem($order_obj->id);
         }
@@ -710,7 +712,7 @@ class Esatisfaction extends Module
      */
     public function getQueueItem($order_id)
     {
-        $sql = 'SELECT `item_id` FROM `'. _DB_PREFIX_ .'esat_order_stat` WHERE `order_id` = '.(int)$order_id;
+        $sql = 'SELECT `item_id` FROM `' . _DB_PREFIX_ . 'esat_order_stat` WHERE `order_id` = ' . (int)$order_id;
 
         return Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($sql);
     }
@@ -725,6 +727,6 @@ class Esatisfaction extends Module
      */
     public function deleteQueueItem($order_id)
     {
-        Db::getInstance()->delete('esat_order_stat', 'order_id = '.$order_id);
+        Db::getInstance()->delete('esat_order_stat', 'order_id = ' . $order_id);
     }
 }
