@@ -59,11 +59,11 @@ class Esatisfaction extends Module
      */
     public function install()
     {
-        Db::getInstance(_PS_USE_SQL_SLAVE_)->Execute('CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'esat_order_stat` (
+        Db::getInstance()->Execute('CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'esat_order_stat` (
         `order_id` INT( 11 ) NOT NULL,
         `item_id` VARCHAR(100) NOT NULL,
-        KEY `order_id` (`order_id`),
-        ) ENGINE = MYISAM');
+        PRIMARY KEY (`order_id`)
+        ) ENGINE = InnoDB');
 
         return parent::install() &&
             $this->registerHook('displayOrderConfirmation') &&
