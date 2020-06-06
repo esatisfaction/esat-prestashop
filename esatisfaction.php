@@ -621,7 +621,7 @@ class Esatisfaction extends Module
             'locale' => Language::getIsoById($customer->id_lang),
             'metadata' => array(
                 'questionnaire' => array(
-                    'transaction_id' => $order_obj->id,
+                    'transaction_id' => sprintf('%s (%s)', $order_obj->id, $order_obj->reference),
                     'transaction_date' => $order_obj->date_add,
                 ),
                 'responder' => array(
