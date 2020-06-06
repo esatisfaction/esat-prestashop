@@ -7,6 +7,8 @@ in all versions (major and minor)
 To get the diff for a specific change, go to https://github.com/esatisfaction/esat-prestashop/commit/XXX where
 XXX is the change hash
 
+* 1.1.1
+  * Include order reference in transaction_id metadata
 * 1.1.0
   * Use e-satisfaction working domain
   * Work with api v3.2
