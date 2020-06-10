@@ -2,9 +2,9 @@
 <module>
     <name>esatisfaction</name>
     <displayName><![CDATA[E-satisfaction Module]]></displayName>
-    <version><![CDATA[1.1.0]]></version>
+    <version><![CDATA[1.1.1]]></version>
     <description><![CDATA[Adds the code necessary to gather customer satisfaction data]]></description>
-    <author><![CDATA[e-satisfaction SA]]></author>
+    <author><![CDATA[e-satisfaction.com]]></author>
     <tab><![CDATA[analytics_stats]]></tab>
     <is_configurable>1</is_configurable>
     <need_instance>0</need_instance>
