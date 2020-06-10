@@ -1,4 +1,5 @@
 <?php
+
 /**
  * NOTICE OF LICENSE.
  *
@@ -8,12 +9,15 @@
  *
  * You must not modify, adapt or create derivative works of this source code
  *
- * @author    e-satisfaction SA
- * @copyright 2018 e-satisfaction SA
+ * @author    e-satisfaction.com
+ * @copyright 2020, e-satisfaction.com
  * @license   https://opensource.org/licenses
  * @version   1.1.1
  */
 
+/**
+ * Class Esatisfaction
+ */
 class Esatisfaction extends Module
 {
     /**
@@ -33,8 +37,8 @@ class Esatisfaction extends Module
     {
         $this->name = 'esatisfaction';
         $this->tab = 'other';
-        $this->version = '1.1.0';
-        $this->author = 'e-satisfaction SA';
+        $this->version = '1.1.1';
+        $this->author = 'e-satisfaction.com';
         $this->tab = 'analytics_stats';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = ['min' => '1.7', 'max' => '1.7.99.99'];
@@ -54,8 +58,9 @@ class Esatisfaction extends Module
      * actionOrderStatusPostUpdate, displayHeader, displayBackOfficeHeader
      *
      * @return bool
-     * @copyright (c) 2018, e-satisfaction SA
-     * @author        e-satisfaction SA
+     *
+     * @copyright (c) 2020, e-satisfaction.com
+     * @author        e-satisfaction.com
      */
     public function install()
     {
@@ -81,8 +86,9 @@ class Esatisfaction extends Module
      * Load the configuration page.
      *
      * @return string
-     * @copyright (c) 2018, e-satisfaction SA
-     * @author        e-satisfaction SA
+     *
+     * @copyright (c) 2020, e-satisfaction.com
+     * @author        e-satisfaction.com
      */
     public function getContent()
     {
@@ -125,8 +131,9 @@ class Esatisfaction extends Module
      * Display module configuration form.
      *
      * @return string
-     * @copyright (c) 2018, e-satisfaction SA
-     * @author        e-satisfaction SA
+     *
+     * @copyright (c) 2020, e-satisfaction.com
+     * @author        e-satisfaction.com
      */
     public function displayForm()
     {
@@ -438,9 +445,8 @@ class Esatisfaction extends Module
      *
      * @param array $params
      *
-     * @copyright (c) 2018, e-satisfaction SA
-     *
-     * @author        e-satisfaction SA
+     * @copyright (c) 2020, e-satisfaction.com
+     * @author        e-satisfaction.com
      */
     public function hookDisplayBackOfficeHeader($params)
     {
@@ -457,9 +463,9 @@ class Esatisfaction extends Module
      * @param array $params
      *
      * @return bool
-     * @author        e-satisfaction SA
-     * @copyright (c) 2018, e-satisfaction SA
      *
+     * @copyright (c) 2020, e-satisfaction.com
+     * @author        e-satisfaction.com
      */
     public function hookDisplayOrderConfirmation($params)
     {
@@ -493,9 +499,9 @@ class Esatisfaction extends Module
      * @param array $params
      *
      * @return string
-     * @author        e-satisfaction SA
-     * @copyright (c) 2018, e-satisfaction SA
      *
+     * @copyright (c) 2020, e-satisfaction.com
+     * @author        e-satisfaction.com
      */
     public function hookDisplayHeader($params)
     {
@@ -512,9 +518,9 @@ class Esatisfaction extends Module
      * @param array $params
      *
      * @throws Exception
-     * @author        e-satisfaction SA
-     * @copyright (c) 2018, e-satisfaction SA
      *
+     * @copyright (c) 2020, e-satisfaction.com
+     * @author        e-satisfaction.com
      */
     public function hookActionOrderStatusPostUpdate($params)
     {
@@ -555,9 +561,9 @@ class Esatisfaction extends Module
      * @param array  $extra_options
      *
      * @return mixed
-     * @author        e-satisfaction SA
-     * @copyright (c) 2018, e-satisfaction SA
      *
+     * @copyright (c) 2020, e-satisfaction.com
+     * @author        e-satisfaction.com
      */
     public function makeApiCall($url, $data, $expected_code, $method = null, $extra_options = [])
     {
@@ -603,9 +609,9 @@ class Esatisfaction extends Module
      * @param bool   $is_store_pickup
      *
      * @throws Exception
-     * @copyright (c) 2018, e-satisfaction SA
      *
-     * @author        e-satisfaction SA
+     * @copyright (c) 2020, e-satisfaction.com
+     * @author        e-satisfaction.com
      */
     public function sendQuestionnaire($order_obj, $customer, $invoice_address, $is_store_pickup)
     {
@@ -652,9 +658,8 @@ class Esatisfaction extends Module
      *
      * @param object $order_obj
      *
-     * @copyright (c) 2018, e-satisfaction SA
-     *
-     * @author        e-satisfaction SA
+     * @copyright (c) 2020, e-satisfaction.com
+     * @author        e-satisfaction.com
      */
     public function cancelQuestionnaire($order_obj)
     {
@@ -677,9 +682,9 @@ class Esatisfaction extends Module
      * @param string $item_id
      *
      * @return bool
-     * @copyright (c) 2018, e-satisfaction SA
      *
-     * @author        e-satisfaction SA
+     * @copyright (c) 2020, e-satisfaction.com
+     * @author        e-satisfaction.com
      */
     public function insertQueueItem($order_id, $item_id)
     {
@@ -698,9 +703,9 @@ class Esatisfaction extends Module
      * @param int $order_id
      *
      * @return object
-     * @author        e-satisfaction SA
-     * @copyright (c) 2018, e-satisfaction SA
      *
+     * @copyright (c) 2020, e-satisfaction.com
+     * @author        e-satisfaction.com
      */
     public function getQueueItem($order_id)
     {
@@ -714,9 +719,8 @@ class Esatisfaction extends Module
      *
      * @param int $order_id
      *
-     * @copyright (c) 2018, e-satisfaction SA
-     *
-     * @author        e-satisfaction SA
+     * @copyright (c) 2020, e-satisfaction.com
+     * @author        e-satisfaction.com
      */
     public function deleteQueueItem($order_id)
     {

@@ -7,8 +7,8 @@
  *
  * You must not modify, adapt or create derivative works of this source code
  *
- * @author    e-satisfaction SA
- * @copyright 2018 e-satisfaction SA
+ * @author    e-satisfaction.com
+ * @copyright 2020, e-satisfaction.com
  * @license   https://opensource.org/licenses
  * @version   1.1.1
  */
