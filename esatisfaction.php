@@ -481,7 +481,7 @@ class Esatisfaction extends Module
         $app_id = Configuration::get('ESATISFACTION_APP_ID');
         $quest_id = Configuration::get('ESATISFACTION_CHKOUTID');
         $this->context->smarty->assign([
-            'order_id' => $params['order']->id,
+            'order_id' => sprintf('%s (%s)', $params['order']->id, $params['order']->reference),
             'order_date' => $params['order']->date_add,
             'app_id' => $app_id,
             'checkout_quest_id' => $quest_id,
