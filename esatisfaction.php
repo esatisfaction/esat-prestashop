@@ -11,7 +11,7 @@
  * @author    e-satisfaction SA
  * @copyright 2018 e-satisfaction SA
  * @license   https://opensource.org/licenses
- * @version   1.1.0
+ * @version   1.1.1
  */
 
 class Esatisfaction extends Module
